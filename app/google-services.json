@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "281513432533",
+    "project_id": "aalap-a-chatting-app",
+    "storage_bucket": "aalap-a-chatting-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281513432533:android:157f141e0717f522a5995c",
+        "android_client_info": {
+          "package_name": "com.example.alaap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeb8OdiKK1yBwPuQaUy71Nd8voewCO-kQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281513432533:android:8ed91d9c60a6164fa5995c",
+        "android_client_info": {
+          "package_name": "com.example.barta_a_messenger_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeb8OdiKK1yBwPuQaUy71Nd8voewCO-kQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
