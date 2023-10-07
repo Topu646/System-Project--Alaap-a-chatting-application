@@ -65,53 +65,104 @@
         android:layout_marginEnd="6dp"
         android:textStyle="normal"
         android:textSize="16sp"
+
         android:textColor="#656262">
     </TextView>
 
-    <androidx.cardview.widget.CardView
-        app:cardUseCompatPadding="true"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="10dp"
-        android:layout_marginTop="25dp"
+<!--    <androidx.cardview.widget.CardView-->
+<!--        app:cardUseCompatPadding="true"-->
+<!--        app:cardCornerRadius="8dp"-->
+<!--        app:cardElevation="10dp"-->
+<!--        android:layout_marginTop="25dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@color/white"-->
+<!--            android:padding="15dp"-->
+<!--            android:layout_margin="15dp"-->
+<!--            android:layout_gravity="center">-->
+
+<!--            <EditText-->
+<!--                android:background="@drawable/background_shape"-->
+<!--                android:id="@+id/editnumber"-->
+<!--                android:padding="10dp"-->
+<!--                android:ems="1"-->
+<!--                android:inputType="phone"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold|normal"-->
+<!--                android:textColor="#1C1C1C"-->
+<!--                android:layout_marginBottom="15dp"-->
+<!--                android:hint="Type your Phone Number"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+<!--            </EditText>-->
+
+<!--            <Button-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/sendotpbtn"-->
+<!--                android:text="Get OTP"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textSize="16sp"-->
+<!--                android:backgroundTint="#32B838">-->
+<!--            </Button>-->
+
+<!--        </LinearLayout>-->
+
+<!--    </androidx.cardview.widget.CardView>-->
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Enter Mobile Number"
+        android:textSize="14sp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/countrypicker"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="@color/white"
-            android:padding="15dp"
-            android:layout_margin="15dp"
-            android:layout_gravity="center">
+            app:ccp_defaultPhoneCode="880"
+            />
 
-            <EditText
-                android:background="@drawable/background_shape"
-                android:id="@+id/editnumber"
-                android:padding="10dp"
-                android:ems="1"
-                android:inputType="phone"
-                android:textSize="20sp"
-                android:textStyle="bold|normal"
-                android:textColor="#1C1C1C"
-                android:layout_marginBottom="15dp"
-                android:hint="Type your Phone Number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </EditText>
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/sendotpbtn"
-                android:text="Send OTP"
-                android:textSize="16sp"
-                android:backgroundTint="#32B838">
-            </Button>
+        <EditText
+            android:id="@+id/phoneno"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:inputType="phone"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/getotpbutton"
+        android:layout_width="319dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/background_shape"
+        android:text="Get OTP"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 </LinearLayout>
