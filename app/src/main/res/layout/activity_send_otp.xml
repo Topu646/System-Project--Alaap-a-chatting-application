@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="#F2F7F4"
+    android:gravity="center_horizontal"
+    tools:context=".SendOtpActivity">
+
+    <ImageView
+        android:src="@drawable/sendotp"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="15dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"/>
+
+    <TextView
+        android:text="OTP Verification"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:textColor="#036007"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="We will send you an "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:textColor="#656262">
+        </TextView>
+
+        <TextView
+            android:text="One Time Password "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#0B0B0B">
+        </TextView>
+
+    </LinearLayout>
+
+    <TextView
+        android:text="on this mobile number..."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:textStyle="normal"
+        android:textSize="16sp"
+        android:textColor="#656262">
+    </TextView>
+
+    <androidx.cardview.widget.CardView
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/white"
+            android:padding="15dp"
+            android:layout_margin="15dp"
+            android:layout_gravity="center">
+
+            <EditText
+                android:background="@drawable/background_shape"
+                android:id="@+id/editnumber"
+                android:padding="10dp"
+                android:ems="1"
+                android:inputType="phone"
+                android:textSize="20sp"
+                android:textStyle="bold|normal"
+                android:textColor="#1C1C1C"
+                android:layout_marginBottom="15dp"
+                android:hint="Type your Phone Number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </EditText>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sendotpbtn"
+                android:text="Send OTP"
+                android:textSize="16sp"
+                android:backgroundTint="#32B838">
+            </Button>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

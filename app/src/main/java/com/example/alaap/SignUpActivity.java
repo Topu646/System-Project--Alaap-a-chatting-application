@@ -81,7 +81,7 @@ public class SignUpActivity extends AppCompatActivity {
                             Log.d(TAG, "New User Created Successfully!");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            Intent intent = new Intent(SignUpActivity.this, HomeScreen.class);
+                            Intent intent = new Intent(SignUpActivity.this, SendOtpActivity.class);
                             intent.putExtra("email",mail);
                             intent.putExtra("name",name.getText().toString());
                             intent.putExtra("password",pass);
