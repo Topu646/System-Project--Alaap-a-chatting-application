@@ -43,30 +43,30 @@ public class SignUpActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        password.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_RIGHT = 2; // Index of drawableEnd
-
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (password.getRight() - password.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        // Handle the click on the drawableEnd here
-                        // For example, toggle the password visibility
-                        togglePasswordVisibility(password);
-                        return true; // Consume the touch event
-                    }
-                }
-                return false; // Let the EditText handle the touch event
-            }
-
-            private void togglePasswordVisibility(EditText password) {
-                if (password.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                } else {
-                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                }
-            }
-        });
+//        password.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                final int DRAWABLE_RIGHT = 2; // Index of drawableEnd
+//
+//                if (event.getAction() == MotionEvent.ACTION_UP) {
+//                    if (event.getRawX() >= (password.getRight() - password.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+//                        // Handle the click on the drawableEnd here
+//                        // For example, toggle the password visibility
+//                        togglePasswordVisibility(password);
+//                        return true; // Consume the touch event
+//                    }
+//                }
+//                return false; // Let the EditText handle the touch event
+//            }
+//
+//            private void togglePasswordVisibility(EditText password) {
+//                if (password.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+//                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+//                } else {
+//                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+//                }
+//            }
+//        });
 
 
         sendOTPButton.setOnClickListener(new View.OnClickListener() {

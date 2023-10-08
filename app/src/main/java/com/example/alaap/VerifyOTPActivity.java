@@ -144,7 +144,6 @@ public class VerifyOTPActivity extends AppCompatActivity {
                 }.start();
             }
         });
-
     }
 
 
@@ -154,8 +153,8 @@ public class VerifyOTPActivity extends AppCompatActivity {
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                 Toast.makeText(VerifyOTPActivity.this,"OTP verification successfull!",Toast.LENGTH_SHORT).show();
                 linkWithCurrentUser(phoneAuthCredential);
-//                Intent intent = new Intent(VerifyOTPActivity.this,HomeScreen.class);
-//                startActivity(intent);
+                Intent intent = new Intent(VerifyOTPActivity.this,HomeScreen.class);
+                startActivity(intent);
             }
 
             @Override

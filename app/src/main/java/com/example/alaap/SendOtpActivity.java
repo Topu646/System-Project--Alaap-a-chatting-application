@@ -30,6 +30,7 @@ public class SendOtpActivity extends AppCompatActivity {
         name = getIntent().getStringExtra("name");
         password = getIntent().getStringExtra("password");
 
+        countryCodePicker.registerCarrierNumberEditText(phonenumber);
 
         getotpbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,12 +41,34 @@ public class SendOtpActivity extends AppCompatActivity {
 
                 else {
 
+//                    Intent intent = new Intent(SendOtpActivity.this, VerifyOTPActivity.class);
+//                    intent.putExtra("email", email);
+//                    intent.putExtra("phone", countryCodePicker.getFullNumberWithPlus());
+//                    intent.putExtra("phone",phonenumber.getText().toString().trim());
+//                    intent.putExtra("name", name);
+//                    intent.putExtra("password", password);
+//                    startActivity(intent);
+
+
+
+
+                    String code = countryCodePicker.getSelectedCountryCodeWithPlus();
+// Although it is written with plus but it has only the country code except the plus.
+// So, we need to add the "+" manually
+
+                    phonenumber.setText(""+code);   // displays the code in the edit text
+
+                    String number = phonenumber.getText().toString().trim();  //phoneNo that the user entered
+                    String phoneNumber = "+" + code + number;   // complete phone number
+
+
                     Intent intent = new Intent(SendOtpActivity.this, VerifyOTPActivity.class);
                     intent.putExtra("email", email);
-                    intent.putExtra("phone", countryCodePicker.getFullNumberWithPlus());
+                    intent.putExtra("phone", phoneNumber);
                     intent.putExtra("name", name);
                     intent.putExtra("password", password);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
