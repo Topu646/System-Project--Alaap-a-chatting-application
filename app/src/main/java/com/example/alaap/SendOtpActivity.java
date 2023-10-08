@@ -30,7 +30,7 @@ public class SendOtpActivity extends AppCompatActivity {
         name = getIntent().getStringExtra("name");
         password = getIntent().getStringExtra("password");
 
-
+        countryCodePicker.registerCarrierNumberEditText(phonenumber);
         getotpbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
