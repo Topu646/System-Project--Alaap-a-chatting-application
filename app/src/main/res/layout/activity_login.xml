@@ -174,10 +174,10 @@
 
                     <ImageView
                         android:id="@+id/googleButton"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="31dp"
+                        android:layout_height="28dp"
                         android:layout_margin="0dp"
-                        android:background="@drawable/google_icon"/>
+                        android:background="@drawable/google_icon" />
 
                 </androidx.cardview.widget.CardView>
 
