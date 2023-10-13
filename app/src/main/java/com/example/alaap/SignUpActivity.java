@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -25,66 +26,96 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    Button sendOTPButton,loginButton;
-    EditText email,name,password;
+    Button signupbutton,loginButton;
+    EditText emailtext,nametext,passwordtext;
 
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseAuth mAuth;
+    String email,name,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        sendOTPButton = findViewById(R.id.otpsendbutton);
+        mAuth=FirebaseAuth.getInstance();
+
+        signupbutton = findViewById(R.id.signupbtn);
         loginButton = findViewById(R.id.loginbutton);
 
-        email = findViewById(R.id.email);
-        name = findViewById(R.id.name);
-        password = findViewById(R.id.password);
+        emailtext = findViewById(R.id.email);
+        nametext = findViewById(R.id.name);
+        passwordtext = findViewById(R.id.password);
 
         mAuth = FirebaseAuth.getInstance();
 
-//        password.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                final int DRAWABLE_RIGHT = 2; // Index of drawableEnd
-//
-//                if (event.getAction() == MotionEvent.ACTION_UP) {
-//                    if (event.getRawX() >= (password.getRight() - password.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-//                        // Handle the click on the drawableEnd here
-//                        // For example, toggle the password visibility
-//                        togglePasswordVisibility(password);
-//                        return true; // Consume the touch event
-//                    }
-//                }
-//                return false; // Let the EditText handle the touch event
-//            }
-//
-//            private void togglePasswordVisibility(EditText password) {
-//                if (password.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-//                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-//                } else {
-//                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-//                }
-//            }
-//        });
+        passwordtext.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2; // Index of drawableEnd
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (passwordtext.getRight() - passwordtext.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // Handle the click on the drawableEnd here
+                        // For example, toggle the password visibility
+                        togglePasswordVisibility(passwordtext);
+                        return true; // Consume the touch event
+                    }
+                }
+                return false; // Let the EditText handle the touch event
+            }
+
+            private void togglePasswordVisibility(EditText password) {
+                if (password.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                } else {
+                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                }
+            }
+        });
 
 
-        sendOTPButton.setOnClickListener(new View.OnClickListener() {
+        signupbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //if the edittexts are empty then set error , else change the activity.
 
-                if(email.getText().toString().isEmpty()==true){
-                    email.setError("not filled");
+                email=emailtext.getText().toString().trim();
+                name=nametext.getText().toString().trim();
+                password=passwordtext.getText().toString().trim();
+
+                if(email.isEmpty()){
+                    emailtext.setError("Enter an email adress");
+                    emailtext.requestFocus();
+                    return;
                 }
-                if(name.getText().toString().isEmpty()==true){
-                    name.setError("not filled");
+                else if(name.isEmpty()){
+                    nametext.setError("not filled");
+                    nametext.requestFocus();
+                    return;
                 }
-                if(password.getText().toString().isEmpty()==true){
-                    password.setError("not filled");
+               else if(password.isEmpty()){
+                    passwordtext.setError("not filled");
+                    passwordtext.requestFocus();
+                    return;
                 }
-                if(!email.getText().toString().isEmpty() && !name.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
-                    createNewUser(email.getText().toString(),password.getText().toString());
+//                else if(!email.getText().toString().isEmpty() && !name.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
+//                    createNewUser(email.getText().toString(),password.getText().toString());
+//                }
+
+                else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+                {
+                    emailtext.setError("Enter a valid email adress");
+                    emailtext.requestFocus();
+                    return;
+                }
+
+                else if(password.length() < 6)
+                {
+                    passwordtext.setError("password must be greater than 6 characters");
+                    passwordtext.requestFocus();
+                    return;
+                }
+                else{
+                    createNewUser(email,password);
                 }
             }
         });
@@ -106,35 +137,34 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Log.d(TAG, "New User Created Successfully!");
+//                            Log.d(TAG, "New User Created Successfully!");
+                            Toast.makeText(getApplicationContext(),"Registration successful",Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            user.delete();
-
-                            Intent intent = new Intent(SignUpActivity.this, SendOtpActivity.class);
+//                            user.delete();
+//
+                            Intent intent = new Intent(SignUpActivity.this, HomeScreen.class);
                             intent.putExtra("email",mail);
-                            intent.putExtra("name",name.getText().toString());
+                            intent.putExtra("name",name);
                             intent.putExtra("password",pass);
                             startActivity(intent);
                         }
                         else{
 
-                            try{
-                                throw task.getException();
-                            }
-                            catch (FirebaseAuthWeakPasswordException weakPasswordException){
-                                password.setError("password must be greater than 6 characters");
+                            if (task.getException() instanceof FirebaseAuthWeakPasswordException){
+                                passwordtext.setError("password must be greater than 6 characters");
                                 Toast.makeText(SignUpActivity.this,"Invalid Password",Toast.LENGTH_LONG).show();
                             }
-                            catch(FirebaseAuthUserCollisionException userCollisionException){
-                                email.setError("This Email is Already Registered");
+                            if(task.getException() instanceof FirebaseAuthUserCollisionException){
+                                emailtext.setError("This Email is Already Registered");
                                 Toast.makeText(SignUpActivity.this,"Email Already Registered",Toast.LENGTH_LONG).show();
                             }
-                            catch (Exception e) {
-                                Toast.makeText(SignUpActivity.this,"Authentication Failed",Toast.LENGTH_LONG).show();
+                            else {
+                                Toast.makeText(SignUpActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
                             }
 
-                            Log.w(TAG,"user creation failed",task.getException());
+//                            Log.w(TAG,"user creation failed",task.getException());
+                            Toast.makeText(SignUpActivity.this,"Registration failed",Toast.LENGTH_LONG).show();
 //                            Toast.makeText(SignUpActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }

@@ -182,6 +182,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <ImageView
+                    android:id="@+id/fbbutton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="12dp"

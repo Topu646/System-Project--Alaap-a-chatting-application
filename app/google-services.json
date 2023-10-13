@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "281513432533",
+    "firebase_url": "https://aalap-a-chatting-app-default-rtdb.firebaseio.com",
     "project_id": "aalap-a-chatting-app",
     "storage_bucket": "aalap-a-chatting-app.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.alaap"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "281513432533-rd4apkj90b91fo1rqovvv9e1a7aeff1q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alaap",
+            "certificate_hash": "762e07119c1eb21963c1688c3547648f1ebcfb33"
+          }
+        },
+        {
+          "client_id": "281513432533-dsop7h2aoar64in56bsi7o4f3b14n3fi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAeb8OdiKK1yBwPuQaUy71Nd8voewCO-kQ"
@@ -20,26 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:281513432533:android:8ed91d9c60a6164fa5995c",
-        "android_client_info": {
-          "package_name": "com.example.barta_a_messenger_app"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAeb8OdiKK1yBwPuQaUy71Nd8voewCO-kQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "281513432533-dsop7h2aoar64in56bsi7o4f3b14n3fi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

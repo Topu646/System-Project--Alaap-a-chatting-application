@@ -133,11 +133,11 @@
                 android:layout_height="10dp"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/otpsendbutton"
+                android:id="@+id/signupbtn"
                 android:layout_width="match_parent"
                 android:backgroundTint="@color/my_primary"
                 android:layout_height="60dp"
-                android:text="Send OTP"
+                android:text="Sign Up"
                 app:cornerRadius="32dp"/>
 
 
