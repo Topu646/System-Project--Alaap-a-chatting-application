@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +27,6 @@ public class HomeScreen extends AppCompatActivity {
     GoogleSignInClient gsc;
     String email,password,name;
 
-    Button signoutbtn;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,40 +34,58 @@ public class HomeScreen extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen);
 
 
-        signoutbtn = findViewById(R.id.signoutbutton);
 
-       gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
-       gsc = GoogleSignIn.getClient(this,gso);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
+        gsc = GoogleSignIn.getClient(this, gso);
 
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        if(account != null)
-//        {
-//            String name = account.getDisplayName();
-//            String email = account.getEmail();
-//            nametext.setText(name);
-//            emailtext.setText(email);
-//        }
-
-//        else{
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null) {
+            String name = account.getDisplayName();
+            String email = account.getEmail();
+        } else {
             Bundle bundle = getIntent().getExtras();
-            if(bundle != null)
-            {
+            if (bundle != null) {
                 email = bundle.getString("email");
                 name = bundle.getString("name");
                 password = bundle.getString("password");
             }
 
-        signoutbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        finish();
-                        startActivity(new Intent(HomeScreen.this,LoginActivity.class));
-                    }
-                });
-            }
-        });
+//            signoutbtn.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            finish();
+//                            startActivity(new Intent(HomeScreen.this, LoginActivity.class));
+//                        }
+//                    });
+//                }
+//            });
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_item,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.signoutid)
+        {
+            gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    finish();
+                    startActivity(new Intent(HomeScreen.this, LoginActivity.class));
+                }
+            });
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

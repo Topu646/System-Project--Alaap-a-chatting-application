@@ -4,21 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:backgroundTint="@color/test"
     android:background="@drawable/background_shape"
     tools:context=".HomeScreen">
 
 
-    <Button
-        android:id="@+id/signoutbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="188dp"
-        android:background="@drawable/background_shape"
-        android:text="Sign out"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.933" />
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:text="Home Screen activity"
+       android:textStyle="bold"
+       android:textColor="@color/teal_200"
+       android:textSize="30sp"
+       android:gravity="center">
+   </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

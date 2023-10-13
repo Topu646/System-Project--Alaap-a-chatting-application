@@ -24,12 +24,12 @@
         <activity
             android:name=".setup_profile"
             android:exported="false" />
-        <activity
-            android:name=".VerifyOTPActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SendOtpActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".VerifyOTPActivity"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".SendOtpActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".HomeScreen"
             android:exported="false" />
