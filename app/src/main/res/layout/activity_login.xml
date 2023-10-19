@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_weight="1"
     tools:context=".LoginActivity">
 
 
@@ -119,12 +120,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Remember me"
+                    android:fontFamily="sans-serif-black"
+                    android:textStyle="bold"
+                    android:textColor="@color/my_primary"
                     android:layout_centerVertical="true"
                     android:alpha="0.7"/>
                 <TextView
+                    android:id="@+id/forgotpassid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="I forgot my password"
+                    android:text="Forgotten Password?"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/my_primary"
+                    android:alpha="0.7"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"/>
 

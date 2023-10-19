@@ -5,6 +5,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -30,6 +31,8 @@ public class SignUpActivity extends AppCompatActivity {
     EditText emailtext,nametext,passwordtext;
 
     FirebaseAuth mAuth;
+
+    ProgressDialog progressDialog;
     String email,name,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //if the edittexts are empty then set error , else change the activity.
+
 
                 email=emailtext.getText().toString().trim();
                 name=nametext.getText().toString().trim();
@@ -132,12 +136,17 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     void createNewUser(String mail,String pass){
+        progressDialog = new ProgressDialog(SignUpActivity.this);
+        progressDialog.setMessage("Creating account....");
+        progressDialog.show();
+
         mAuth.createUserWithEmailAndPassword(mail,pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
 //                            Log.d(TAG, "New User Created Successfully!");
+                            progressDialog.cancel();
                             Toast.makeText(getApplicationContext(),"Registration successful",Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
 
@@ -150,6 +159,7 @@ public class SignUpActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                         else{
+                            progressDialog.cancel();
 
                             if (task.getException() instanceof FirebaseAuthWeakPasswordException){
                                 passwordtext.setError("password must be greater than 6 characters");

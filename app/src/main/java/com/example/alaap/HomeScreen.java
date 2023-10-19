@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,10 +28,12 @@ public class HomeScreen extends AppCompatActivity {
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
-    String email,password,name;
-    String namefromgoogle,emailfromgoogle;
+    String email, password, name;
+    String namefromgoogle, emailfromgoogle;
 
     FirebaseAuth mauth;
+
+    String code;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -38,7 +41,8 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-
+//        Bundle bundle = getIntent().getExtras();
+//        code = bundle.getString("code");
 
         mauth = FirebaseAuth.getInstance();
 
@@ -47,15 +51,16 @@ public class HomeScreen extends AppCompatActivity {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
-             namefromgoogle = account.getDisplayName();
-             emailfromgoogle = account.getEmail();
+            namefromgoogle = account.getDisplayName();
+            emailfromgoogle = account.getEmail();
         } else {
-            Bundle bundle = getIntent().getExtras();
+           Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 email = bundle.getString("email");
                 name = bundle.getString("name");
                 password = bundle.getString("password");
             }
+
 
 //            signoutbtn.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -76,38 +81,51 @@ public class HomeScreen extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_item,menu);
+        menuInflater.inflate(R.menu.menu_item, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId() == R.id.signoutid)
-        {
-//            if(email != null)
+        if (item.getItemId() == R.id.signoutid) {
+
+//            if(code.equals("two"))
+//            {
+                gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+//                        finish();
+//                        startActivity(new Intent(HomeScreen.this, LoginActivity.class));
+
+                        if (task.isSuccessful()) {
+                            // Sign out was successful, navigate to the login screen
+                            navigateToLogin();
+                        } else {
+                            Log.d("error", task.getException().getMessage());
+                        }
+                    }
+                });
+//            }
+//
+//            if(code.equals("one"))
 //            {
 //                mauth.signOut();
 //                signOutUser();
 //            }
-//
-            if(emailfromgoogle.length() != 0) {
-                gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        finish();
-                        startActivity(new Intent(HomeScreen.this, LoginActivity.class));
-                    }
-                });
-            }
 
-            else {
-                mauth.signOut();
-                signOutUser();
-            }
         }
+
         return super.onOptionsItemSelected(item);
     }
+
+    private void navigateToLogin() {
+        Intent intent = new Intent(HomeScreen.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
 
     private void signOutUser() {
         Intent intent = new Intent(HomeScreen.this,LoginActivity.class);

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -16,6 +17,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.Login;
@@ -34,10 +36,13 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.auth.User;
 
+import io.grpc.ClientStreamTracer;
+
 public class LoginActivity extends AppCompatActivity {
 
     Button loginButton, signupButton;
     ImageView googleButton,facebookbutton;
+    TextView forgotpasstext;
 
     EditText email,password;
 
@@ -49,6 +54,10 @@ public class LoginActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
 
+    ProgressDialog progressDialog;
+
+    String mail,name,code;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -58,6 +67,8 @@ public class LoginActivity extends AppCompatActivity {
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+
+        forgotpasstext = findViewById(R.id.forgotpassid);
 
         loginButton = findViewById(R.id.loginbutton);
         signupButton = findViewById(R.id.signupbutton);
@@ -75,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null)
         {
-            navigateToSecondActivity();
+           navigateToSecondActivity();
         }
 
 
@@ -108,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //code = "two";
                 signInwithGoogle();
             }
         });
@@ -122,13 +134,22 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(email.getText().toString().isEmpty()==true){
-                    email.setError("required");
+                    email.setError("Enter email adress");
+                    email.requestFocus();
+                    return;
                 }
                 if(password.getText().toString().isEmpty()==true){
-                    password.setError("password empty");
+                    password.setError("Enter password");
+                    password.requestFocus();
+                    return;
                 }
                 if(!email.getText().toString().isEmpty() &&  !password.getText().toString().isEmpty()){
+                  //  code = "one";
+                    progressDialog = new ProgressDialog(LoginActivity.this);
+                    progressDialog.setMessage("Logging in process...");
+                    progressDialog.show();
                     signInwithEmailPassword(email.getText().toString(),password.getText().toString());
                 }
             }
@@ -142,6 +163,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        forgotpasstext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,ForgotpassActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -149,10 +178,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
-            startActivity(intent);
-        }
+//        String email = currentUser.getEmail();
+//        String name = currentUser.getDisplayName();
+//        System.out.println("Name : "+name);
+//        System.out.println("Email : "+email);
+//        if(currentUser != null){
+//            Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
+//            startActivity(intent);
+//        }
     }
 
     private void togglePasswordVisibility(EditText editText) {
@@ -207,8 +240,10 @@ public class LoginActivity extends AppCompatActivity {
 //                    users.setEmail(user.getEmail());
 //
 //                    database.getReference().child("Users").child(user.getUid()).setValue(users);
-
-                    navigateToSecondActivity();
+                    Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
+                    //intent.putExtra("code_no","two");
+                    startActivity(intent);
+//                    navigateToSecondActivity();
                 }
                 else{
                     Toast.makeText(LoginActivity.this,"Error while log in with google",Toast.LENGTH_SHORT).show();
@@ -220,6 +255,7 @@ public class LoginActivity extends AppCompatActivity {
     private void navigateToSecondActivity() {
         finish();
         Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
+      //  intent.putExtra("code",code);
         startActivity(intent);
     }
 
@@ -229,13 +265,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                    // Log.d(TAG,"signInWithEmail:success");
+                    progressDialog.cancel();
                     Toast.makeText(LoginActivity.this,"Login successful",Toast.LENGTH_LONG).show();
                     FirebaseUser user = mAuth.getCurrentUser();
 
                     Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
+                    intent.putExtra("code_no","one");
                     startActivity(intent);
                 }
                 else{
+                    progressDialog.cancel();
                     //Log.w(TAG,"signInWithEmail:Failed",task.getException());
                     Toast.makeText(LoginActivity.this,"Incorrect Email Or Password",Toast.LENGTH_SHORT).show();
                 }
