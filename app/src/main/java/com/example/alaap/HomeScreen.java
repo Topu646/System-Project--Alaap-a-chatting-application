@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -53,8 +54,8 @@ public class HomeScreen extends AppCompatActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
         demotext = findViewById(R.id.demotext);
         demotext2 = findViewById(R.id.demotext2);
-        //demotext.setText(preferenceManager.getString("name"));
-        demotext2.setText(preferenceManager.getString("userId"));
+        demotext.setText(preferenceManager.getString("name"));
+        demotext2.setText(preferenceManager.getString("email"));
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
         gsc = GoogleSignIn.getClient(this, gso);
@@ -85,6 +86,13 @@ public class HomeScreen extends AppCompatActivity {
 //                }
 //            });
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mauth.getCurrentUser();
+
     }
 
     @Override

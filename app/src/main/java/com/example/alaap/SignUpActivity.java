@@ -168,6 +168,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                     preferenceManager.putBoolean("isSignedIn",true);
                                                     preferenceManager.putString("userId",documentReference.getId());
                                                     preferenceManager.putString("name",name);
+                                                    preferenceManager.putString("email",email);
                                                     Toast.makeText(getApplicationContext(),"Registration successful",Toast.LENGTH_SHORT).show();
 
                                                 }

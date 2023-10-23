@@ -281,8 +281,9 @@ public class LoginActivity extends AppCompatActivity {
                     String email = user.getEmail();
                     String name = user.getDisplayName();
                     preferenceManager.putBoolean("isSignedIn",true);
-                    preferenceManager.putString("userId",email);
+                    preferenceManager.putString("email",email);
                     preferenceManager.putString("name",name);
+                    preferenceManager.putString("userId",user.getUid());
                     Toast.makeText(LoginActivity.this,"Login successful",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
                     intent.putExtra("name",name);

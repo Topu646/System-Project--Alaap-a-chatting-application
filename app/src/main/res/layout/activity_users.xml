@@ -4,28 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UsersActivity">
-    
-    <TextView
+    tools:context=".UsersActivity"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:id="@+id/taskbarrelative"
+        android:backgroundTint="#5A2ABA"
+        android:background="@color/my_primary"
+        >
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/backbtn"
+            android:backgroundTint="@color/my_primary"
+            android:src="@drawable/round_arrow_back_ios_24"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select User"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/selecttextview"
+            />
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select User"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true"
-        android:padding="5dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/selecttextview"
-        />
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/usersrecyclerview"
-        android:layout_below="@+id/selecttextview"
-        android:padding="10dp"
-        android:orientation="vertical"
-        android:clipToPadding="false"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        />
+        android:layout_below="@+id/taskbarrelative"
+        app:cardCornerRadius="20dp"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/usersrecyclerview"
+            android:layout_below="@+id/taskbarrelative"
+            tools:listitem="@layout/item_container_user"
+            android:padding="10dp"
+
+            android:orientation="vertical"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+
+
+            />
+    </androidx.cardview.widget.CardView>
+
 
     <TextView
         android:layout_width="wrap_content"
