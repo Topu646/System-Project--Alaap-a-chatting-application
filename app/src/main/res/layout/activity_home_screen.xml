@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,18 +7,38 @@
     android:layout_weight="1"
     android:orientation="vertical"
     android:backgroundTint="@color/test"
-    android:background="@drawable/background_shape"
+
     tools:context=".HomeScreen">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/demotext"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="email@email.com"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/demotext"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/demotext2"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_person_24"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:id="@+id/floatingbutton"
+        />
 
-   <TextView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:text="Home Screen activity"
-       android:textStyle="bold"
-       android:textColor="@color/teal_200"
-       android:textSize="30sp"
-       android:gravity="center">
-   </TextView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

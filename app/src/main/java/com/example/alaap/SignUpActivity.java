@@ -18,18 +18,25 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
 
     Button signupbutton,loginButton;
     EditText emailtext,nametext,passwordtext;
 
+    private PreferenceManager preferenceManager;
     FirebaseAuth mAuth;
 
     ProgressDialog progressDialog;
@@ -40,7 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         mAuth=FirebaseAuth.getInstance();
-
+        preferenceManager = new PreferenceManager(getApplicationContext());
         signupbutton = findViewById(R.id.signupbtn);
         loginButton = findViewById(R.id.loginbutton);
 
@@ -147,7 +154,31 @@ public class SignUpActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
 //                            Log.d(TAG, "New User Created Successfully!");
                             progressDialog.cancel();
-                            Toast.makeText(getApplicationContext(),"Registration successful",Toast.LENGTH_SHORT).show();
+
+                            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                            HashMap<String,Object> User = new HashMap<>();
+                            User.put("name",name);
+                            User.put("email",email);
+                            User.put("password",password);
+
+                            firestore.collection("users").add(User)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    preferenceManager.putBoolean("isSignedIn",true);
+                                                    preferenceManager.putString("userId",documentReference.getId());
+                                                    preferenceManager.putString("name",name);
+                                                    Toast.makeText(getApplicationContext(),"Registration successful",Toast.LENGTH_SHORT).show();
+
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                            Toast.makeText(SignUpActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
                             FirebaseUser user = mAuth.getCurrentUser();
 
 //                            user.delete();

@@ -27,6 +27,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -34,6 +36,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 
 import io.grpc.ClientStreamTracer;
@@ -44,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     ImageView googleButton,facebookbutton;
     TextView forgotpasstext;
 
+    PreferenceManager preferenceManager;
     EditText email,password;
 
     GoogleSignInOptions gso;
@@ -65,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        preferenceManager = new PreferenceManager(getApplicationContext());
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
 
@@ -178,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-//        String email = currentUser.getEmail();
+  //     String email = currentUser.getEmail();
 //        String name = currentUser.getDisplayName();
 //        System.out.println("Name : "+name);
 //        System.out.println("Email : "+email);
@@ -266,11 +273,19 @@ public class LoginActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                    // Log.d(TAG,"signInWithEmail:success");
                     progressDialog.cancel();
-                    Toast.makeText(LoginActivity.this,"Login successful",Toast.LENGTH_LONG).show();
-                    FirebaseUser user = mAuth.getCurrentUser();
 
+                    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    String email = user.getEmail();
+                    String name = user.getDisplayName();
+                    preferenceManager.putBoolean("isSignedIn",true);
+                    preferenceManager.putString("userId",email);
+                    preferenceManager.putString("name",name);
+                    Toast.makeText(LoginActivity.this,"Login successful",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
-                    intent.putExtra("code_no","one");
+                    intent.putExtra("name",name);
                     startActivity(intent);
                 }
                 else{

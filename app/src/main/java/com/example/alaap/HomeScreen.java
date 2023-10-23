@@ -1,8 +1,5 @@
 package com.example.alaap;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +8,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.QuickContactBadge;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -21,8 +19,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -30,10 +28,10 @@ public class HomeScreen extends AppCompatActivity {
     GoogleSignInClient gsc;
     String email, password, name;
     String namefromgoogle, emailfromgoogle;
-
     FirebaseAuth mauth;
-
-    String code;
+    TextView demotext, demotext2;
+    private PreferenceManager preferenceManager;
+    FloatingActionButton floatingActionButton;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -41,10 +39,22 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-//        Bundle bundle = getIntent().getExtras();
-//        code = bundle.getString("code");
-
         mauth = FirebaseAuth.getInstance();
+
+        floatingActionButton = findViewById(R.id.floatingbutton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UsersActivity.class);
+                startActivity(intent);
+
+            }
+        });
+        preferenceManager = new PreferenceManager(getApplicationContext());
+        demotext = findViewById(R.id.demotext);
+        demotext2 = findViewById(R.id.demotext2);
+        //demotext.setText(preferenceManager.getString("name"));
+        demotext2.setText(preferenceManager.getString("userId"));
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
         gsc = GoogleSignIn.getClient(this, gso);
