@@ -21,10 +21,12 @@
         android:theme="@style/Theme.Alaap"
         tools:targetApi="31">
         <activity
-            android:name=".UsersActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:name=".ChatActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".UsersActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".ForgotpassActivity"
             android:exported="false" />

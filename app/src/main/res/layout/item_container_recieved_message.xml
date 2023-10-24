@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="4dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imagecardview"
+        app:cardCornerRadius="100dp"
+        >
+
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/logo_color"
+
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/recieved_msg_bg"
+        android:text="Sample Message"
+        android:textColor="@color/white"
+        android:padding="10sp"
+        android:textSize="15sp"
+        android:layout_toRightOf="@+id/imagecardview"
+        android:layout_margin="7dp"
+        android:id="@+id/textviewRecievedMessage"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datetimerecievedTextView"
+        android:layout_below="@+id/textviewRecievedMessage"
+        android:layout_toEndOf="@+id/imagecardview"
+        android:textSize="10sp"
+        android:layout_marginTop="-3dp"
+        android:text="3.45 pm 19 september"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="7dp"
+        android:paddingLeft="7dp"
+        />
+
+
+</RelativeLayout>
