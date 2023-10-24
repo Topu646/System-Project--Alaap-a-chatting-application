@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textviewMessage"
         android:text="Sample Text "
+        
         android:background="@drawable/sent_msg_bg"
         android:textSize="15sp"
         android:textColor="@color/white"
