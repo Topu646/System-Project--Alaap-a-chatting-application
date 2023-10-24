@@ -1,7 +1,9 @@
 package com.example.alaap;
 
-public class Users {
-    String userid,name,email;
+import java.io.Serializable;
+
+public class Users implements Serializable {
+    public String userid,name,email;
 
     public String getUserid() {
         return userid;

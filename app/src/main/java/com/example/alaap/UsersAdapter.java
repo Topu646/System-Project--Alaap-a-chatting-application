@@ -1,22 +1,28 @@
 package com.example.alaap;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.alaap.databinding.ItemContainerUserBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder>{
 
     private final List<Users> usersList;
+    private final UserListener userListener;
 
-    public UsersAdapter(List<Users> usersList) {
+    public UsersAdapter(List<Users> usersList , UserListener userListener) {
         this.usersList = usersList;
+        this.userListener = userListener;
     }
+
 
     class UserViewHolder extends RecyclerView.ViewHolder{
         ItemContainerUserBinding binding;
@@ -30,6 +36,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         {
             binding.nametextview.setText(users.name);
             binding.emailtextview.setText(users.email);
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    userListener.onUserClicked(users);
+                }
+            });
         }
     }
 

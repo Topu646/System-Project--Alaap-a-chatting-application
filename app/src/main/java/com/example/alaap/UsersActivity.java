@@ -17,7 +17,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersActivity extends AppCompatActivity {
+public class UsersActivity extends AppCompatActivity implements UserListener{
 
     ActivityUsersBinding binding;
     private PreferenceManager preferenceManager;
@@ -43,9 +43,8 @@ public class UsersActivity extends AppCompatActivity {
     private void getUsers(){
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("users")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                .get().addOnCompleteListener(task ->  {
+
                         String currentUserId = preferenceManager.getString("userId");
                         if (task.isSuccessful() && task.getResult() != null)
                         {
@@ -62,7 +61,7 @@ public class UsersActivity extends AppCompatActivity {
                                 users.add(user);
                                 if (users.size()> 0)
                                 {
-                                    UsersAdapter usersAdapter = new UsersAdapter(users);
+                                    UsersAdapter usersAdapter = new UsersAdapter(users,this);
                                     binding.usersrecyclerview.setAdapter(usersAdapter);
                                 }else {
                                     Errormessage();
@@ -71,12 +70,20 @@ public class UsersActivity extends AppCompatActivity {
                         }else {
                             Errormessage();
                         }
-                    }
+
                 });
     }
     private void Errormessage()
     {
         binding.errortextview.setText("No users Available");
         binding.errortextview.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onUserClicked(Users user) {
+        Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+        finish();
     }
 }
