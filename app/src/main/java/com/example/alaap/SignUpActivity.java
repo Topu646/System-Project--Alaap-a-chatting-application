@@ -103,7 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
                     nametext.requestFocus();
                     return;
                 }
-               else if(password.isEmpty()){
+                else if(password.isEmpty()){
                     passwordtext.setError("not filled");
                     passwordtext.requestFocus();
                     return;
@@ -161,18 +161,21 @@ public class SignUpActivity extends AppCompatActivity {
                             User.put("email",email);
                             User.put("password",password);
 
-                            firestore.collection("users").add(User)
-                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                @Override
-                                                public void onSuccess(DocumentReference documentReference) {
-                                                    preferenceManager.putBoolean("isSignedIn",true);
-                                                    preferenceManager.putString("userId",documentReference.getId());
-                                                    preferenceManager.putString("name",name);
-                                                    preferenceManager.putString("email",email);
-                                                    Toast.makeText(getApplicationContext(),"Registration successful",Toast.LENGTH_SHORT).show();
+                            String uid = mAuth.getUid();
 
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
+                            firestore.collection("users").document(uid).set(User)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+
+                                            preferenceManager.putBoolean("isSignedIn",true);
+                                            preferenceManager.putString("userId",uid);
+                                            preferenceManager.putString("name",name);
+                                            preferenceManager.putString("email",email);
+                                            Toast.makeText(getApplicationContext(),"Registration successful",Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
 

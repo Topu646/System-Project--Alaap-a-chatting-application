@@ -34,23 +34,11 @@ public class ChatActivity extends AppCompatActivity {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.backbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), HomeScreen.class);
-                startActivity(intent);
-
-            }
-        });
+        binding.backbutton.setOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
         loadRecieverDetails();
         init();
         listenMessage();
-        binding.sendbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendMessage();
-            }
-        });
+        binding.sendbutton.setOnClickListener(view -> sendMessage());
 
     }
 
@@ -69,6 +57,7 @@ public class ChatActivity extends AppCompatActivity {
     {
         if(error!= null)
         {
+            System.out.println("chat error "+error);
             return ;
         }
         if (value!=null)
