@@ -29,7 +29,26 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/demotext2"
         />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/demotext2"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:overScrollMode="never"
+        android:visibility="gone"
+        android:id="@+id/conversationsRecyclerview"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
+        />
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progress_bar"
+
+        />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingbutton"
         android:layout_width="wrap_content"
