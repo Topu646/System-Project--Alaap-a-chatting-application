@@ -185,12 +185,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-  //     String email = currentUser.getEmail();
-//        String name = currentUser.getDisplayName();
-//        System.out.println("Name : "+name);
-//        System.out.println("Email : "+email);
+//
 //        if(currentUser != null){
 //            Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
+//            String email = currentUser.getEmail();
+//            String name = currentUser.getDisplayName();
+//            intent.putExtra("name",name);
+//            intent.putExtra("email",email);
 //            startActivity(intent);
 //        }
     }
@@ -287,6 +288,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this,"Login successful",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
                     intent.putExtra("name",name);
+                    intent.putExtra("email",email);
                     startActivity(intent);
                 }
                 else{

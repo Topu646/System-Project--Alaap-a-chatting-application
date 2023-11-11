@@ -2,17 +2,24 @@ package com.example.alaap;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.alaap.databinding.ActivityHomeScreenBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,27 +29,42 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
+import java.util.Objects;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeScreen extends AppCompatActivity {
 
+    private ActivityHomeScreenBinding binding;
+    private PreferenceManager preferenceManager;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
     String email, password, name;
+    ImageView profileimageview;
     String namefromgoogle, emailfromgoogle;
     FirebaseAuth mauth;
     TextView demotext, demotext2;
-    private PreferenceManager preferenceManager;
     FloatingActionButton floatingActionButton;
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_screen);
 
+        binding = ActivityHomeScreenBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        preferenceManager = new PreferenceManager(getApplicationContext());
         mauth = FirebaseAuth.getInstance();
 
-        floatingActionButton = findViewById(R.id.floatingbutton);
+        floatingActionButton = findViewById(R.id.plusbtn);
+        profileimageview = findViewById(R.id.profileicon);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,26 +73,42 @@ public class HomeScreen extends AppCompatActivity {
 
             }
         });
-        preferenceManager = new PreferenceManager(getApplicationContext());
-        demotext = findViewById(R.id.demotext);
-        demotext2 = findViewById(R.id.demotext2);
-        demotext.setText(preferenceManager.getString("name"));
-        demotext2.setText(preferenceManager.getString("email"));
+
+
+
+        if (binding != null) {
+            loadUserDetails();
+        }
+        getToken();
+        setListeners();
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
         gsc = GoogleSignIn.getClient(this, gso);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
-            namefromgoogle = account.getDisplayName();
-            emailfromgoogle = account.getEmail();
-        } else {
-           Bundle bundle = getIntent().getExtras();
+            name = account.getDisplayName();
+            email = account.getEmail();
+        }
+        else {
+            Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 email = bundle.getString("email");
                 name = bundle.getString("name");
                 password = bundle.getString("password");
             }
+        }
+
+        profileimageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("ClickTest", "Profile image clicked!");
+                Intent intent = new Intent(HomeScreen.this, EditProfile.class);
+                intent.putExtra("name", name);
+                intent.putExtra("email", email);
+                startActivity(intent);
+            }
+        });
 
 
 //            signoutbtn.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +124,87 @@ public class HomeScreen extends AppCompatActivity {
 //                }
 //            });
         }
+  //  }
+
+
+//    private void loadUserDetails() {
+//        binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
+//        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE),Base64.DEFAULT);
+//        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0,bytes.length);
+//        binding.imageSignout.setImageBitmap(bitmap);
+//    }
+
+    private void setListeners()
+    {
+        binding.imageSignout.setOnClickListener(v -> signOut());
     }
+    private void loadUserDetails() {
+        if (preferenceManager != null && binding != null && binding.textName != null && binding.profileicon != null) {
+            String userName = preferenceManager.getString(Constants.KEY_NAME);
+            if (userName != null) {
+                binding.textName.setText(userName);
+            }
+
+            String imageString = preferenceManager.getString(Constants.KEY_IMAGE);
+            Log.d("ImageString", "Image string: " + imageString);
+            if (imageString != null) {
+                byte[] bytes = Base64.decode(imageString, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                if (bitmap != null) {
+                    binding.profileicon.setImageBitmap(bitmap);
+                } else {
+                    // If bitmap is null, handle the image decoding failure
+                    // For example, you can set a default image or show a placeholder.
+                    binding.profileicon.setImageResource(R.drawable.dp);
+                }
+            } else {
+                // Handle the case where the image string is null or empty in preferences
+                // Set a default image or show a placeholder.
+                binding.profileicon.setImageResource(R.drawable.dp2);
+            }
+        }
+    }
+
+
+    private void showToast(String message)
+    {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void getToken()
+    {
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
+    }
+    private void updateToken(String token)
+    {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS).document(
+                preferenceManager.getString(Constants.KEY_USER_ID)
+        );
+        documentReference.update(Constants.KEY_FCM_TOKEN, token)
+                .addOnSuccessListener(unused -> showToast("Token updated successfully"))
+                .addOnFailureListener(e -> showToast("Unable to update token"));
+    }
+
+    private void signOut()
+    {
+        showToast("Signing out....");
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS).document(
+                preferenceManager.getString(Constants.KEY_USER_ID)
+        );
+
+        HashMap<String, Object>updates = new HashMap<>();
+        updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
+        documentReference.update(updates)
+                .addOnSuccessListener(unused -> {
+                    preferenceManager.clear();
+                    startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                    finish();
+                })
+                .addOnFailureListener(e -> showToast("Unable to sign out"));
+    }
+
 
     @Override
     protected void onStart() {

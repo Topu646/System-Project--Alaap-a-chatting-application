@@ -21,10 +21,16 @@
         android:theme="@style/Theme.Alaap"
         tools:targetApi="31">
         <activity
+            android:name=".EditStatus"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfile"
+            android:exported="false" />
+        <activity
             android:name=".ChatActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".UsersActivity"
             android:exported="false"

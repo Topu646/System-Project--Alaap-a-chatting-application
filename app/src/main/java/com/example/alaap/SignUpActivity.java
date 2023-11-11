@@ -5,6 +5,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -39,6 +41,7 @@ public class SignUpActivity extends AppCompatActivity {
     private PreferenceManager preferenceManager;
     FirebaseAuth mAuth;
 
+    FirebaseDatabase firebaseDatabase;
     ProgressDialog progressDialog;
     String email,name,password;
     @Override
@@ -55,7 +58,7 @@ public class SignUpActivity extends AppCompatActivity {
         nametext = findViewById(R.id.name);
         passwordtext = findViewById(R.id.password);
 
-        mAuth = FirebaseAuth.getInstance();
+      //  mAuth = FirebaseAuth.getInstance();
 
         passwordtext.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -126,7 +129,7 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
                 else{
-                    createNewUser(email,password);
+                    createNewUser(email,password,name);
                 }
             }
         });
@@ -142,19 +145,23 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-    void createNewUser(String mail,String pass){
+    void createNewUser(String mail,String pass,String name){
         progressDialog = new ProgressDialog(SignUpActivity.this);
         progressDialog.setMessage("Creating account....");
         progressDialog.show();
 
         mAuth.createUserWithEmailAndPassword(mail,pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @SuppressLint("RestrictedApi")
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.cancel();
                         if(task.isSuccessful()){
 //                            Log.d(TAG, "New User Created Successfully!");
-                            progressDialog.cancel();
 
+                            String user = mAuth.getCurrentUser().getUid();
+
+                            firebaseDatabase.getInstance().getReference().child("user").child(user).setValue(new User(nametext.getText().toString(),emailtext.getText().toString(),""));
                             FirebaseFirestore firestore = FirebaseFirestore.getInstance();
                             HashMap<String,Object> User = new HashMap<>();
                             User.put("name",name);
@@ -183,18 +190,17 @@ public class SignUpActivity extends AppCompatActivity {
                                         }
                                     });
 
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
 //                            user.delete();
 //
                             Intent intent = new Intent(SignUpActivity.this, HomeScreen.class);
                             intent.putExtra("email",mail);
-                            intent.putExtra("name",name);
+                            intent.putExtra("name",nametext.getText().toString());
                             intent.putExtra("password",pass);
                             startActivity(intent);
                         }
                         else{
-                            progressDialog.cancel();
 
                             if (task.getException() instanceof FirebaseAuthWeakPasswordException){
                                 passwordtext.setError("password must be greater than 6 characters");
