@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HomeScreen extends AppCompatActivity implements ConversationListener{
+public class HomeScreen extends BaseActivity implements ConversationListener{
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;

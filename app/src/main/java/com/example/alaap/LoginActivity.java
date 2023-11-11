@@ -88,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         gsc = GoogleSignIn.getClient(this,gso);
 
         mAuth = FirebaseAuth.getInstance();
+        String uid = mAuth.getUid();
         database = FirebaseDatabase.getInstance();
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);

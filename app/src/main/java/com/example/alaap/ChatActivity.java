@@ -23,8 +23,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends BaseActivity {
 
     private ActivityChatBinding binding;
     private Users recieverUser;
@@ -33,6 +34,7 @@ public class ChatActivity extends AppCompatActivity {
     private PreferenceManager preferenceManager;
     private FirebaseFirestore firestore;
     private String conversationId = null;
+    private Boolean isReceiverAvailable = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +101,33 @@ public class ChatActivity extends AppCompatActivity {
         }
 
     };
+
+    private void listenAvailabilityOfReceiver(){
+        firestore.collection("users").document(
+                recieverUser.userid
+        ).addSnapshotListener(ChatActivity.this, (value, error) -> {
+            if (error != null){
+                return;
+            }
+            if (value != null)
+            {
+                if (value.getLong("availability") != null)
+                {
+                    int availability = Objects.requireNonNull(
+                            value.getLong("availability"))
+                                    .intValue();
+                            isReceiverAvailable = availability == 1;
+
+                }
+            }
+            if (isReceiverAvailable)
+            {
+                binding.availabilitytextview.setVisibility(View.VISIBLE);
+            }else {
+                binding.availabilitytextview.setVisibility(View.GONE);
+            }
+        });
+    }
 
     private void listenMessage(){
         firestore.collection("chat")
@@ -178,4 +207,10 @@ public class ChatActivity extends AppCompatActivity {
             conversationId = documentSnapshot.getId();
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listenAvailabilityOfReceiver();
+    }
 }
