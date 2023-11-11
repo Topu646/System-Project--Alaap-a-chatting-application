@@ -7,7 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.alaap.databinding.ActivityChatBinding;
+import com.facebook.internal.WebDialog;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -19,8 +23,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends BaseActivity {
 
     private ActivityChatBinding binding;
     private Users recieverUser;
@@ -28,6 +33,8 @@ public class ChatActivity extends AppCompatActivity {
     private ChatAdapter chatAdapter;
     private PreferenceManager preferenceManager;
     private FirebaseFirestore firestore;
+    private String conversationId = null;
+    private Boolean isReceiverAvailable = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,9 +95,39 @@ public class ChatActivity extends AppCompatActivity {
             }
 
         }
-
+        if (conversationId == null)
+        {
+            checkForConversation();
+        }
 
     };
+
+    private void listenAvailabilityOfReceiver(){
+        firestore.collection("users").document(
+                recieverUser.userid
+        ).addSnapshotListener(ChatActivity.this, (value, error) -> {
+            if (error != null){
+                return;
+            }
+            if (value != null)
+            {
+                if (value.getLong("availability") != null)
+                {
+                    int availability = Objects.requireNonNull(
+                            value.getLong("availability"))
+                                    .intValue();
+                            isReceiverAvailable = availability == 1;
+
+                }
+            }
+            if (isReceiverAvailable)
+            {
+                binding.availabilitytextview.setVisibility(View.VISIBLE);
+            }else {
+                binding.availabilitytextview.setVisibility(View.GONE);
+            }
+        });
+    }
 
     private void listenMessage(){
         firestore.collection("chat")
@@ -111,6 +148,19 @@ public class ChatActivity extends AppCompatActivity {
         message.put("message",binding.messageEditText.getText().toString());
         message.put("timestamp",new Date());
         firestore.collection("chat").add(message);
+        if (conversationId != null)
+        {
+            updateConversation(binding.messageEditText.getText().toString());
+        }else {
+            HashMap<String,Object> conversation = new HashMap<>();
+            conversation.put("senderId",preferenceManager.getString("userId"));
+            conversation.put("senderName",preferenceManager.getString("name"));
+            conversation.put("receiverId",recieverUser.userid);
+            conversation.put("receiverName",recieverUser.name);
+            conversation.put("lastMessage",binding.messageEditText.getText().toString());
+            conversation.put("timestamp",new Date());
+            addConversation(conversation);
+        }
         binding.messageEditText.setText(null);
     }
     private void loadRecieverDetails()
@@ -122,5 +172,45 @@ public class ChatActivity extends AppCompatActivity {
     private String getReadableDateTime(Date date)
     {
         return  new SimpleDateFormat("MMMM dd, yyyy - hh:mm: a", Locale.getDefault()).format(date);
+    }
+
+    private void addConversation(HashMap<String,Object> conversation)
+    {
+        firestore.collection("conversations").add(conversation)
+                .addOnSuccessListener(documentReference -> conversationId = documentReference.getId());
+    }
+    private void updateConversation(String message)
+    {
+        DocumentReference documentReference = firestore.collection("conversations").document(conversationId);
+        documentReference.update("lastMessage",message,"timestamp", new Date());
+    }
+
+    private void checkForConversation(){
+        if (chatMessages.size() != 0)
+        {
+            checkForConversationRemotely(preferenceManager.getString("userId"),recieverUser.userid);
+            checkForConversationRemotely(recieverUser.userid,preferenceManager.getString("userId"));
+        }
+    }
+    private void checkForConversationRemotely(String senderId, String receiverId)
+    {
+        firestore.collection("conversations")
+                .whereEqualTo("senderId",senderId)
+                .whereEqualTo("receiverId",receiverId)
+                .get().addOnCompleteListener(conversationOnCompleteListener);
+
+    }
+    private final OnCompleteListener<QuerySnapshot> conversationOnCompleteListener = task -> {
+        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0  )
+        {
+            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+            conversationId = documentSnapshot.getId();
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listenAvailabilityOfReceiver();
     }
 }

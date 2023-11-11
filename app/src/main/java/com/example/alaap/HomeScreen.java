@@ -29,6 +29,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,7 +41,16 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeScreen extends AppCompatActivity {
+
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.QuerySnapshot;
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class HomeScreen extends BaseActivity implements ConversationListener{
 
     private ActivityHomeScreenBinding binding;
     private PreferenceManager preferenceManager;
@@ -51,16 +62,26 @@ public class HomeScreen extends AppCompatActivity {
     FirebaseAuth mauth;
     TextView demotext, demotext2;
     FloatingActionButton floatingActionButton;
+    private List<ChatMessage>conversations;
+    private recentConversationAdapter conversationAdapter;
+    private FirebaseFirestore database;
 
+    //private ActivityHomeScreenBinding binding;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        preferenceManager = new PreferenceManager(getApplicationContext());
         binding = ActivityHomeScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        preferenceManager = new PreferenceManager(getApplicationContext());
+        conversations = new ArrayList<>();
+        conversationAdapter = new recentConversationAdapter(conversations,this);
+        binding.conversationsRecyclerview.setAdapter(conversationAdapter);
+        database = FirebaseFirestore.getInstance();
+
         mauth = FirebaseAuth.getInstance();
 
         floatingActionButton = findViewById(R.id.plusbtn);
@@ -85,6 +106,7 @@ public class HomeScreen extends AppCompatActivity {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
         gsc = GoogleSignIn.getClient(this, gso);
 
+        listenConversations();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
             name = account.getDisplayName();
@@ -139,10 +161,10 @@ public class HomeScreen extends AppCompatActivity {
         binding.imageSignout.setOnClickListener(v -> signOut());
     }
     private void loadUserDetails() {
-        if (preferenceManager != null && binding != null && binding.textName != null && binding.profileicon != null) {
+        if (preferenceManager != null && binding != null && binding.demotext != null && binding.profileicon != null) {
             String userName = preferenceManager.getString(Constants.KEY_NAME);
             if (userName != null) {
-                binding.textName.setText(userName);
+                binding.demotext.setText(userName);
             }
 
             String imageString = preferenceManager.getString(Constants.KEY_IMAGE);
@@ -206,6 +228,73 @@ public class HomeScreen extends AppCompatActivity {
     }
 
 
+    private final EventListener<QuerySnapshot> eventListener = (value , error) ->
+    {
+        if(error!= null)
+        {
+
+            return ;
+        }
+        if (value!=null)
+        {
+
+
+            for (DocumentChange documentChange : value.getDocumentChanges())
+            {
+                if (documentChange.getType() == DocumentChange.Type.ADDED)
+                {
+                    String senderId = documentChange.getDocument().getString("senderId");
+                    String receiverId = documentChange.getDocument().getString("receiverId");
+                    ChatMessage chatMessage = new ChatMessage();
+                    chatMessage.senderId = senderId;
+                    chatMessage.recieverId = receiverId;
+                    if (preferenceManager.getString("userId").equals(senderId))
+                    {
+                        chatMessage.conversationNmae = documentChange.getDocument().getString("receiverName");
+                        chatMessage.conversationId = documentChange.getDocument().getString("receiverId");
+                    }else {
+                        chatMessage.conversationNmae = documentChange.getDocument().getString("senderName");
+                        chatMessage.conversationId = documentChange.getDocument().getString("senderId");
+                    }
+                    chatMessage.message = documentChange.getDocument().getString("lastMessage");
+                    chatMessage.dateObject = documentChange.getDocument().getDate("timestamp");
+                    conversations.add(chatMessage);
+                }else if (documentChange.getType() == DocumentChange.Type.MODIFIED)
+                {
+                    for (int i =0; i < conversations.size();i++)
+                    {
+                        String senderId = documentChange.getDocument().getString("senderId");
+                        String receiverId = documentChange.getDocument().getString("receiverId");
+                        if (conversations.get(i).senderId.equals(senderId) && conversations.get(i).recieverId.equals(receiverId))
+                        {
+                            conversations.get(i).message = documentChange.getDocument().getString("lastMessage");
+                            conversations.get(i).dateObject = documentChange.getDocument().getDate("timestamp");
+                            break;
+                        }
+                    }
+                }
+
+            }
+            Collections.sort(conversations, (obj1 , obj2) -> obj2.dateObject.compareTo(obj1.dateObject));
+            conversationAdapter.notifyDataSetChanged();
+            binding.conversationsRecyclerview.smoothScrollToPosition(0);
+            binding.conversationsRecyclerview.setVisibility(View.VISIBLE);
+            binding.progressBar.setVisibility(View.GONE);
+
+
+        }
+
+
+    };
+
+    private void listenConversations()
+    {
+        database.collection("conversations").whereEqualTo("senderId",preferenceManager.getString("userId"))
+                .addSnapshotListener(eventListener);
+        database.collection("conversations").whereEqualTo("receiverId",preferenceManager.getString("userId"))
+                .addSnapshotListener(eventListener);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -268,5 +357,12 @@ public class HomeScreen extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onConversationClicked(Users user) {
+        Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
+        intent.putExtra("user",user);
+        startActivity(intent);
     }
 }

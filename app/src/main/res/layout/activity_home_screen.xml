@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
     android:orientation="vertical"
-    android:background="@color/my_primary"
+
     android:animateLayoutChanges="true"
     android:backgroundTint="@color/test"
     tools:context=".HomeScreen">
@@ -22,7 +22,7 @@
         android:layout_marginLeft="16sp"
         android:layout_marginTop="12sp"
         android:background="@drawable/background_shape"
-        android:backgroundTint="#B80E0E"
+        android:backgroundTint="#EA4C4C"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -38,47 +38,84 @@
         android:background="@drawable/background_icon"
         android:padding="6sp"
         android:src="@drawable/round_logout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:tint="@color/white">
+        android:layout_alignParentEnd="true"
+        android:tint="@color/black">
     </androidx.appcompat.widget.AppCompatImageView>
 
-    <TextView
-        android:id="@+id/textName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8sp"
-        android:layout_marginEnd="8sp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:maxLines="1"
-        android:textColor="@color/white"
-        android:textSize="14dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/profileicon"
-        app:layout_constraintEnd_toStartOf="@id/imageSignout"
-        app:layout_constraintStart_toStartOf="@id/profileicon"
-        app:layout_constraintTop_toTopOf="@id/profileicon">
-    </TextView>
+<!--    <TextView-->
+<!--        android:id="@+id/textName"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="8sp"-->
+<!--        android:layout_marginEnd="8sp"-->
+<!--        android:ellipsize="end"-->
+<!--        android:gravity="center"-->
+<!--        android:textAlignment="center"-->
+<!--        android:maxLines="1"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="14dp"-->
+<!--        android:textStyle="bold"-->
 
+<!--        app:layout_constraintBottom_toBottomOf="@+id/profileicon"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/imageSignout"-->
+<!--        app:layout_constraintStart_toStartOf="@id/profileicon"-->
+<!--        app:layout_constraintTop_toTopOf="@id/profileicon">-->
+<!--    </TextView>-->
+
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerHorizontal="true"
+         android:id="@+id/demotext"
+         android:textSize="20sp"
+         android:textStyle="bold"
+         android:text="Name">
+     </TextView>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="email@email.com"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/demotext"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/demotext2"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/demotext2"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:overScrollMode="never"
+        android:visibility="gone"
+        android:id="@+id/conversationsRecyclerview"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+
+        />
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progress_bar"
+
+        />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/plusbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-
+        android:layout_margin="5dp"
         android:backgroundTint="@color/my_primary"
         android:padding="10dp"
         android:src="@drawable/round_add_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.929"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textName"
-        app:layout_constraintVertical_bias="0.949"
+
         tools:ignore="MissingConstraints" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

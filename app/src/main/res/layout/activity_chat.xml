@@ -59,12 +59,24 @@
 
                 />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Online"
+
+                android:layout_below="@id/nametextview"
+                android:gravity="center"
+                android:background="#51D543"
+                android:id="@+id/availabilitytextview"
+
+                />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/chatrecyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/nametextview"
+                android:layout_below="@id/availabilitytextview"
                 app:stackFromEnd="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="vertical"
