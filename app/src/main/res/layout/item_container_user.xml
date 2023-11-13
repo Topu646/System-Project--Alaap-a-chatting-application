@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="2dp"
-    android:background="#F3CBFA">
+
+    android:background="#D6ACF3">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -45,5 +46,6 @@
         android:id="@+id/emailtextview"
 
         />
+
 
 </RelativeLayout>

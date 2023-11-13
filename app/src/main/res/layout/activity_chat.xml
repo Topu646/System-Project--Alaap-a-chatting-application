@@ -26,45 +26,56 @@
 
             >
 
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/backbutton"
-                android:src="@drawable/round_arrow_back_24_black"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/white"
-
-                />
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/infobutton"
-                android:src="@drawable/outline_info_24"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/white"
-                android:layout_alignParentRight="true"
-                />
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/nametextview"
-                android:layout_toLeftOf="@id/infobutton"
-                android:layout_toRightOf="@id/backbutton"
-                android:layout_marginTop="23dp"
-                android:text="Sample Name"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="center"
+                android:id="@+id/topbarrelative"
+                android:background="@color/my_primary"
+                android:padding="5dp"
+                >
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/backbutton"
+                    android:src="@drawable/baseline_arrow_back_24"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/my_primary"
 
-                />
+                    />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/infobutton"
+                    android:src="@drawable/info_white"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/my_primary"
+                    android:layout_alignParentRight="true"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nametextview"
+                    android:layout_toLeftOf="@id/infobutton"
+                    android:layout_toRightOf="@id/backbutton"
+                    android:layout_marginTop="23dp"
+                    android:text="Sample Name"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:gravity="center"
+
+                    />
+
+            </RelativeLayout>
+
+
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Online"
 
-                android:layout_below="@id/nametextview"
+                android:layout_below="@id/topbarrelative"
                 android:gravity="center"
                 android:background="#51D543"
                 android:id="@+id/availabilitytextview"

@@ -25,8 +25,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select com.example.alaap.User"
+            android:text="Contacts on Alaap"
             android:textSize="20sp"
+            android:layout_centerInParent="true"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_centerHorizontal="true"

@@ -138,6 +138,8 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         });
 
 
+
+
 //            signoutbtn.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
@@ -163,13 +165,17 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
     private void setListeners()
     {
-        binding.imageSignout.setOnClickListener(v -> signOut());
+        binding.imageSignout.setOnClickListener(v -> logout_user());
     }
     private void loadUserDetails() {
         if (preferenceManager != null && binding != null && binding.demotext != null && binding.profileicon != null) {
             String userName = preferenceManager.getString(Constants.KEY_NAME);
+            String email = preferenceManager.getString("email");
             if (userName != null) {
                 binding.demotext.setText(userName);
+            }
+            if (email != null) {
+                binding.demotext2.setText(email);
             }
 
             String imageString = preferenceManager.getString(Constants.KEY_IMAGE);

@@ -108,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:inputType="textPassword"
-                android:hint="Enter a strong password"
+                android:hint="Enter your password"
 
                 android:drawableEnd="@drawable/baseline_visibility_24"/>
 

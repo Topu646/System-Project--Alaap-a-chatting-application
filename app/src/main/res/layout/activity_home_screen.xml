@@ -12,82 +12,93 @@
     tools:context=".HomeScreen">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="30sp"
-        android:layout_height="30sp"
-        android:id="@+id/profileicon"
-        android:tint="@color/white"
-        android:clickable="true"
-        android:layout_marginStart="16sp"
-        android:layout_marginLeft="16sp"
-        android:layout_marginTop="12sp"
-        android:background="@drawable/background_shape"
-        android:backgroundTint="#EA4C4C"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </de.hdodenhof.circleimageview.CircleImageView>
-    
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="30sp"
-        android:layout_height="30sp"
-        android:id="@+id/imageSignout"
-        android:layout_marginTop="12sp"
-        android:layout_marginEnd="16sp"
-        android:layout_marginRight="16sp"
-        android:backgroundTint="@color/com_facebook_blue"
-        android:background="@drawable/background_icon"
-        android:padding="6sp"
-        android:src="@drawable/round_logout"
-        android:layout_alignParentEnd="true"
-        android:tint="@color/black">
-    </androidx.appcompat.widget.AppCompatImageView>
-
-<!--    <TextView-->
-<!--        android:id="@+id/textName"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="8sp"-->
-<!--        android:layout_marginEnd="8sp"-->
-<!--        android:ellipsize="end"-->
-<!--        android:gravity="center"-->
-<!--        android:textAlignment="center"-->
-<!--        android:maxLines="1"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="14dp"-->
-<!--        android:textStyle="bold"-->
-
-<!--        app:layout_constraintBottom_toBottomOf="@+id/profileicon"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/imageSignout"-->
-<!--        app:layout_constraintStart_toStartOf="@id/profileicon"-->
-<!--        app:layout_constraintTop_toTopOf="@id/profileicon">-->
-<!--    </TextView>-->
-
-     <TextView
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_centerHorizontal="true"
-         android:id="@+id/demotext"
-         android:textSize="20sp"
-         android:textStyle="bold"
-         android:text="Name">
-     </TextView>
-
-
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="email@email.com"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/demotext"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/demotext2"
-        />
+        android:id="@+id/topbarrelative"
+        android:padding="5dp"
+        android:background="@color/my_primary"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:id="@+id/profileicon"
+
+            android:clickable="true"
+            android:layout_marginStart="16sp"
+            android:layout_marginLeft="16sp"
+            android:layout_marginTop="12sp"
+            android:background="@drawable/background_shape"
+
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:id="@+id/imageSignout"
+            android:layout_marginTop="12sp"
+            android:layout_marginEnd="16sp"
+            android:layout_marginRight="16sp"
+            android:backgroundTint="@color/white"
+
+            android:padding="6sp"
+            android:src="@drawable/baseline_power_settings_new_24"
+            android:layout_alignParentEnd="true"
+            >
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <!--    <TextView-->
+        <!--        android:id="@+id/textName"-->
+        <!--        android:layout_width="0dp"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_marginStart="8sp"-->
+        <!--        android:layout_marginEnd="8sp"-->
+        <!--        android:ellipsize="end"-->
+        <!--        android:gravity="center"-->
+        <!--        android:textAlignment="center"-->
+        <!--        android:maxLines="1"-->
+        <!--        android:textColor="@color/white"-->
+        <!--        android:textSize="14dp"-->
+        <!--        android:textStyle="bold"-->
+
+        <!--        app:layout_constraintBottom_toBottomOf="@+id/profileicon"-->
+        <!--        app:layout_constraintEnd_toStartOf="@id/imageSignout"-->
+        <!--        app:layout_constraintStart_toStartOf="@id/profileicon"-->
+        <!--        app:layout_constraintTop_toTopOf="@id/profileicon">-->
+        <!--    </TextView>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/demotext"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Name">
+        </TextView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email@email.com"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/demotext"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/demotext2"
+            />
+
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/demotext2"
+        android:layout_below="@+id/topbarrelative"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:padding="5dp"
@@ -105,17 +116,21 @@
         android:id="@+id/progress_bar"
 
         />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/plusbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+
+        android:layout_marginBottom="5dp"
         android:backgroundTint="@color/my_primary"
         android:padding="10dp"
         android:src="@drawable/round_add_24"
-
         tools:ignore="MissingConstraints" />
 
 
