@@ -54,6 +54,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
     private ActivityHomeScreenBinding binding;
     private PreferenceManager preferenceManager;
+    private SharedPrefManager sharedPrefManager;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
     String email, password, name;
@@ -72,6 +73,8 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        sharedPrefManager = new SharedPrefManager(getApplicationContext());
 
         preferenceManager = new PreferenceManager(getApplicationContext());
         binding = ActivityHomeScreenBinding.inflate(getLayoutInflater());
@@ -121,6 +124,8 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
             }
         }
 
+//        demotext.setText(name);
+//        demotext2.setText(email);
         profileimageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,7 +187,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
             } else {
                 // Handle the case where the image string is null or empty in preferences
                 // Set a default image or show a placeholder.
-                binding.profileicon.setImageResource(R.drawable.dp2);
+                binding.profileicon.setImageResource(R.drawable.profileicon1);
             }
         }
     }
@@ -315,33 +320,46 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
         if (item.getItemId() == R.id.signoutid) {
 
-//            if(code.equals("two"))
-//            {
-                gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-//                        finish();
-//                        startActivity(new Intent(HomeScreen.this, LoginActivity.class));
 
-                        if (task.isSuccessful()) {
-                            // Sign out was successful, navigate to the login screen
-                            navigateToLogin();
-                        } else {
-                            Log.d("error", task.getException().getMessage());
-                        }
-                    }
-                });
-//            }
+                logout_user();
+
+//            if(code.equals("two"))
+////            {
+//                gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+////                        finish();
+////                        startActivity(new Intent(HomeScreen.this, LoginActivity.class));
 //
-//            if(code.equals("one"))
-//            {
-//                mauth.signOut();
-//                signOutUser();
-//            }
+//                        if (task.isSuccessful()) {
+//                            // Sign out was successful, navigate to the login screen
+//                            navigateToLogin();
+//                        } else {
+//                            Log.d("error", task.getException().getMessage());
+//                        }
+//                    }
+//                });
+////            }
+////
+////            if(code.equals("one"))
+////            {
+////                mauth.signOut();
+////                signOutUser();
+////            }
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout_user() {
+        FirebaseAuth.getInstance().signOut();
+        sharedPrefManager.logout();
+        Intent intent = new Intent(HomeScreen.this,LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+        Toast.makeText(getApplicationContext(),"You have been logged out",Toast.LENGTH_SHORT).show();
     }
 
     private void navigateToLogin() {
