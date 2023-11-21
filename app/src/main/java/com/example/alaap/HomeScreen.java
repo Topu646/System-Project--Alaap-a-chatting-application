@@ -210,12 +210,12 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
     }
     private void updateToken(String token)
     {
+        preferenceManager.putString(Constants.KEY_FCM_TOKEN,token);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS).document(
                 preferenceManager.getString(Constants.KEY_USER_ID)
         );
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
-                .addOnSuccessListener(unused -> showToast("Token updated successfully"))
                 .addOnFailureListener(e -> showToast("Unable to update token"));
     }
 
