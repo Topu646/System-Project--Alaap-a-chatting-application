@@ -188,12 +188,12 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if(currentUser != null){
-            Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
-            String email = currentUser.getEmail();
-            String name = currentUser.getDisplayName();
-            intent.putExtra("name",name);
-            intent.putExtra("email",email);
-            startActivity(intent);
+//            Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
+//            String email = currentUser.getEmail();
+//            String name = currentUser.getDisplayName();
+//            intent.putExtra("name",name);
+//            intent.putExtra("email",email);
+//            startActivity(intent);
         }
     }
 
@@ -205,9 +205,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void signOut() {
-        // Implement sign out logic here
-    }
+//    private void signOut() {
+//        // Implement sign out logic here
+//    }
 
     private void signInwithGoogle() {
        // Intent signInIntent = gsc.getSignInIntent();

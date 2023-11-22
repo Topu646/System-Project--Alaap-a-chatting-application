@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,11 +38,9 @@ public class EditProfile extends AppCompatActivity {
     Button editstatusbutton,changeprofilebutton;
     TextView nametextview,emailtextview,usernametextview,statustextview;
 
-    ImageView chatimageview,settingimagesview,notificationimageview,moreimageview;
-
     ImageView imgprofile,header_img;
+    EditText nameedittext,emailedittext,bioedittext,socialedittext;
     private Uri imagePath;
-
     FirebaseAuth mauth;
     DatabaseReference databaseReference,userRef;
 
@@ -53,20 +52,20 @@ public class EditProfile extends AppCompatActivity {
         mauth = FirebaseAuth.getInstance();
         uid = mauth.getCurrentUser().getUid();
 
-        nametextview = findViewById(R.id.nametextid);
-        emailtextview = findViewById(R.id.emailtextid);
-        usernametextview = findViewById(R.id.usernameid);
-        statustextview = findViewById(R.id.statusid);
+//        nameeditbutton = findViewById(R.id.nameeditbtn);
+//        emaileditbutton = findViewById(R.id.emaileditbtn);
+//        bioeditbutton = findViewById(R.id.bioeditbtn);
+//        socialimeditbutton = findViewById(R.id.socialeditbtn);
 
-//        chatimageview = findViewById(R.id.chatid);
-//        settingimagesview = findViewById(R.id.settingsid);
-//        notificationimageview = findViewById(R.id.notificationid);
-//        moreimageview = findViewById(R.id.moreid);
 
         imgprofile = findViewById(R.id.profilePicture);
         header_img = findViewById(R.id.roundImageView);
 
-      //  editstatusbutton = findViewById(R.id.editStatusButton);
+//        nameedittext = findViewById(R.id.nameidedit);
+//        emailedittext = findViewById(R.id.emailidedit);
+//        bioedittext = findViewById(R.id.bioidedit);
+//        socialedittext = findViewById(R.id.socialidedit);
+
         changeprofilebutton = findViewById(R.id.changeProfilePictureButton);
 
         Bundle bundle = getIntent().getExtras();
@@ -111,13 +110,7 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-//        editstatusbutton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(EditProfile.this, EditStatus.class);
-//                startActivity(intent);
-//            }
-//        });
+
 
         changeprofilebutton.setOnClickListener(new View.OnClickListener() {
             @Override

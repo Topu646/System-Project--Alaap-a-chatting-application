@@ -58,10 +58,10 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
     String email, password, name;
-    ImageView profileimageview;
+    ImageView profileimageview,signout;
     String namefromgoogle, emailfromgoogle;
     FirebaseAuth mauth;
-    TextView demotext, demotext2;
+//    TextView demotext, demotext2;
     FloatingActionButton floatingActionButton;
     private List<ChatMessage>conversations;
     private recentConversationAdapter conversationAdapter;
@@ -89,6 +89,8 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
         floatingActionButton = findViewById(R.id.plusbtn);
         profileimageview = findViewById(R.id.profileicon);
+
+        signout = findViewById(R.id.imageSignout);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +105,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         if (binding != null) {
             loadUserDetails();
         }
-        getToken();
+//        getToken();
         setListeners();
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
@@ -140,24 +142,31 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
 
 
-//            signoutbtn.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            finish();
-//                            startActivity(new Intent(HomeScreen.this, LoginActivity.class));
-//                        }
-//                    });
-//                }
-//            });
+            signout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    signout_fun();
+                }
+
+            });
         }
-  //  }
+
+    private void signout_fun() {
+        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                finish();
+                startActivity(new Intent(HomeScreen.this, LoginActivity.class));
+            }
+        });
+        logout_user();
+    }
+
+    //  }
 
 
 //    private void loadUserDetails() {
-//        binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
+//        binding.textname.setText(preferenceManager.getString(Constants.KEY_NAME));
 //        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE),Base64.DEFAULT);
 //        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0,bytes.length);
 //        binding.imageSignout.setImageBitmap(bitmap);
@@ -204,20 +213,20 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private void getToken()
-    {
-        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
-    }
-    private void updateToken(String token)
-    {
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS).document(
-                preferenceManager.getString(Constants.KEY_USER_ID)
-        );
-        documentReference.update(Constants.KEY_FCM_TOKEN, token)
-                .addOnSuccessListener(unused -> showToast("Token updated successfully"))
-                .addOnFailureListener(e -> showToast("Unable to update token"));
-    }
+//    private void getToken()
+//    {
+//        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
+//    }
+//    private void updateToken(String token)
+//    {
+//        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS).document(
+//                preferenceManager.getString(Constants.KEY_USER_ID)
+//        );
+//        documentReference.update(Constants.KEY_FCM_TOKEN, token)
+//                .addOnSuccessListener(unused -> showToast("Token updated successfully"))
+//                .addOnFailureListener(e -> showToast("Unable to update token"));
+//    }
 
     private void signOut()
     {
