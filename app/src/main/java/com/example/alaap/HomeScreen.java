@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +60,8 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
     GoogleSignInClient gsc;
     String email, password, name;
     ImageView profileimageview,signout;
+
+    Button addpostbutton;
     String namefromgoogle, emailfromgoogle;
     FirebaseAuth mauth;
 //    TextView demotext, demotext2;
@@ -90,6 +93,8 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         floatingActionButton = findViewById(R.id.plusbtn);
         profileimageview = findViewById(R.id.profileicon);
 
+        addpostbutton = findViewById(R.id.addpostbuttonid);
+
         signout = findViewById(R.id.imageSignout);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +102,16 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
                 Intent intent = new Intent(getApplicationContext(), UsersActivity.class);
                 startActivity(intent);
 
+            }
+        });
+
+
+
+        addpostbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeScreen.this,AddPostActivity.class);
+                startActivity(intent);
             }
         });
 

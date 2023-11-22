@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:layout_weight="1"
     android:orientation="vertical"
-
     android:animateLayoutChanges="true"
     android:backgroundTint="@color/test"
     tools:context=".HomeScreen">
@@ -131,6 +130,23 @@
         android:padding="10dp"
         android:src="@drawable/round_add_24"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:background="@drawable/background_shape"
+        android:layout_width="wrap_content"
+        android:id="@+id/addpostbuttonid"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_1"
+        android:text="Add post"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/purple_700"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp">
+    </Button>
 
 
 </RelativeLayout>
