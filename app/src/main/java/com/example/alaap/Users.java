@@ -3,7 +3,7 @@ package com.example.alaap;
 import java.io.Serializable;
 
 public class Users implements Serializable {
-    public String userid,name,email;
+    public String userid,name,email,token;
 
     public String getUserid() {
         return userid;
@@ -27,5 +27,13 @@ public class Users implements Serializable {
 
     public void setEmail(String name) {
         this.name = name;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -213,20 +213,21 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-//    private void getToken()
-//    {
-//        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
-//    }
-//    private void updateToken(String token)
-//    {
-//        FirebaseFirestore database = FirebaseFirestore.getInstance();
-//        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS).document(
-//                preferenceManager.getString(Constants.KEY_USER_ID)
-//        );
-//        documentReference.update(Constants.KEY_FCM_TOKEN, token)
-//                .addOnSuccessListener(unused -> showToast("Token updated successfully"))
-//                .addOnFailureListener(e -> showToast("Unable to update token"));
-//    }
+    private void getToken()
+    {
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
+    }
+    private void updateToken(String token)
+    {
+        preferenceManager.putString(Constants.KEY_FCM_TOKEN,token);
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS).document(
+                preferenceManager.getString(Constants.KEY_USER_ID)
+        );
+        documentReference.update(Constants.KEY_FCM_TOKEN, token)
+                .addOnFailureListener(e -> showToast("Unable to update token"));
+    }
+
 
     private void signOut()
     {
