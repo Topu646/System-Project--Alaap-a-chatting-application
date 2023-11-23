@@ -2,14 +2,21 @@ package com.example.alaap;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.InputType;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.MotionEvent;
@@ -18,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.alaap.databinding.ActivitySignUpBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,23 +43,27 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
 
     Button signupbutton,loginButton;
     EditText emailtext,nametext,passwordtext;
-
+    private ActivitySignUpBinding binding;
     private PreferenceManager preferenceManager;
     FirebaseAuth mAuth;
-
+    private String encodedImage;
     FirebaseDatabase firebaseDatabase;
     ProgressDialog progressDialog;
     String email,name,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         mAuth=FirebaseAuth.getInstance();
         preferenceManager = new PreferenceManager(getApplicationContext());
@@ -64,6 +76,11 @@ public class SignUpActivity extends AppCompatActivity {
 
       //  mAuth = FirebaseAuth.getInstance();
 
+        binding.profileimage.setOnClickListener(view ->{
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            pickImage.launch(intent);
+        });
         passwordtext.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -100,7 +117,12 @@ public class SignUpActivity extends AppCompatActivity {
                 name=nametext.getText().toString().trim();
                 password=passwordtext.getText().toString().trim();
 
-                if(email.isEmpty()){
+                if (encodedImage == null)
+                {
+                    Toast.makeText(SignUpActivity.this, "Select profile picture.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(email.isEmpty()){
                     emailtext.setError("Enter an email adress");
                     emailtext.requestFocus();
                     return;
@@ -147,6 +169,37 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
     }
+    private String  encodeImage(Bitmap bitmap)
+    {
+        int previewWidth = 150;
+        int previewHeight = bitmap.getHeight() + previewWidth/ bitmap.getWidth();
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap,previewWidth,previewHeight,false);
+        ByteArrayOutputStream byteArrayOutputStream= new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(bytes,Base64.DEFAULT);
+    }
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK)
+                {
+                    if (result.getData() != null)
+                    {
+                        Uri imageuri = result.getData().getData();
+                        try {
+                            InputStream inputStream = getContentResolver().openInputStream(imageuri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            binding.profileimage.setImageBitmap(bitmap);
+                            encodedImage = encodeImage(bitmap);
+                        }catch (FileNotFoundException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+    );
 
 
     void createNewUser(String mail,String pass,String name){
@@ -171,7 +224,7 @@ public class SignUpActivity extends AppCompatActivity {
                             User.put("name",name);
                             User.put("email",email);
                             User.put("password",password);
-
+                            User.put("image",encodedImage);
                             String uid = mAuth.getUid();
 
                             firestore.collection("users").document(uid).set(User)
@@ -182,6 +235,7 @@ public class SignUpActivity extends AppCompatActivity {
                                             preferenceManager.putBoolean("isSignedIn",true);
                                             preferenceManager.putString("userId",uid);
                                             preferenceManager.putString("name",name);
+                                            preferenceManager.putString("image",encodedImage);
                                             preferenceManager.putString("email",email);
                                             Toast.makeText(getApplicationContext(),"Registration successful",Toast.LENGTH_SHORT).show();
 

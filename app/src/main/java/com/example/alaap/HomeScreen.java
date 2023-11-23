@@ -218,33 +218,22 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         binding.imageSignout.setOnClickListener(v -> logout_user());
     }
     private void loadUserDetails() {
-        if (preferenceManager != null && binding != null && binding.demotext != null && binding.profileicon != null) {
-            String userName = preferenceManager.getString(Constants.KEY_NAME);
-            String email = preferenceManager.getString("email");
-            if (userName != null) {
-                binding.demotext.setText(userName);
-            }
-            if (email != null) {
-                binding.demotext2.setText(email);
-            }
+        String name = preferenceManager.getString("name");
+        String email = preferenceManager.getString("email");
+        String imageString = preferenceManager.getString("image");
 
-            String imageString = preferenceManager.getString(Constants.KEY_IMAGE);
-            Log.d("ImageString", "Image string: " + imageString);
-            if (imageString != null) {
-                byte[] bytes = Base64.decode(imageString, Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                if (bitmap != null) {
-                    binding.profileicon.setImageBitmap(bitmap);
-                } else {
-                    // If bitmap is null, handle the image decoding failure
-                    // For example, you can set a default image or show a placeholder.
-                    binding.profileicon.setImageResource(R.drawable.dp);
-                }
-            } else {
-                // Handle the case where the image string is null or empty in preferences
-                // Set a default image or show a placeholder.
-                binding.profileicon.setImageResource(R.drawable.profileicon1);
-            }
+        if (name != null) {
+            binding.demotext.setText(name);
+        }
+
+        if (email != null) {
+            binding.demotext2.setText(email);
+        }
+
+        if (imageString != null) {
+            byte[] bytes = Base64.decode(imageString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            binding.profileicon.setImageBitmap(bitmap);
         }
     }
 

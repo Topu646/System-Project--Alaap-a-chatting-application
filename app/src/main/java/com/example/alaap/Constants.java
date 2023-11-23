@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class Constants {
     public final static String KEY_IMAGE = "image";
     public final static String KEY_NAME = "name";
+    public final static String KEY_PREFERENCE_NAME = "chatAppPreference";
     public final static String KEY_EMAIL = "email";
     public final static String KEY_FCM_TOKEN = "fcmToken";
     public final static String KEY_COLLECTION_USERS = "users";
