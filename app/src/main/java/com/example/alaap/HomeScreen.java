@@ -1,5 +1,7 @@
 package com.example.alaap;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,8 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedDispatcherKt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Consumer;
 
 import com.example.alaap.databinding.ActivityHomeScreenBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -70,11 +74,33 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
     private recentConversationAdapter conversationAdapter;
     private FirebaseFirestore database;
 
+    private long backpressedTime;
+    private Toast backToast;
+
+    @Override
+    public void onBackPressed() {
+
+
+        if (backpressedTime + 2000 > System.currentTimeMillis())
+        {
+            backToast.cancel();
+            finishAffinity();
+            super.onBackPressed();
+            return;
+        }else {
+            backToast = Toast.makeText(getApplicationContext(),"Press back again to exit",Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backpressedTime = System.currentTimeMillis();
+
+    }
+
     //private ActivityHomeScreenBinding binding;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
         sharedPrefManager = new SharedPrefManager(getApplicationContext());

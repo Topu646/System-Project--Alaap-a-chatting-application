@@ -36,7 +36,7 @@ public class EditProfile extends AppCompatActivity {
 
     String name,email,uid;
     Button editstatusbutton,changeprofilebutton;
-    TextView nametextview,emailtextview,usernametextview,statustextview;
+    TextView emailtextview,usernametextview;
 
     ImageView imgprofile,header_img;
     EditText nameedittext,emailedittext,bioedittext,socialedittext;
@@ -51,6 +51,10 @@ public class EditProfile extends AppCompatActivity {
 
         mauth = FirebaseAuth.getInstance();
         uid = mauth.getCurrentUser().getUid();
+
+        usernametextview = findViewById(R.id.usernameid);
+        emailtextview = findViewById(R.id.statusid);
+
 
 //        nameeditbutton = findViewById(R.id.nameeditbtn);
 //        emaileditbutton = findViewById(R.id.emaileditbtn);
@@ -73,11 +77,11 @@ public class EditProfile extends AppCompatActivity {
             name = bundle.getString("name");
             email = bundle.getString("email");
         }
-        nametextview.setText(name);
-        emailtextview.setText(email);
+        //nametextview.setText(name);
+        //emailtextview.setText(email);
 
         usernametextview.setText(name);
-        statustextview.setText(email);
+        emailtextview.setText(email);
 
    userRef = FirebaseDatabase.getInstance().getReference().child("user").child(uid);;
 
@@ -90,7 +94,7 @@ public class EditProfile extends AppCompatActivity {
                     String profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
 
                     usernametextview.setText(name);
-                    nametextview.setText(name);
+                    usernametextview.setText(name);
                     if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
                         Picasso.get().load(profilePictureUrl).into(imgprofile);
                         Picasso.get().load(profilePictureUrl).into(header_img);
@@ -167,7 +171,7 @@ public class EditProfile extends AppCompatActivity {
                         String profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
 
                         usernametextview.setText(name);
-                        nametextview.setText(name);
+                        usernametextview.setText(name);
                         if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
                             Picasso.get().load(profilePictureUrl).into(imgprofile);
                             Picasso.get().load(profilePictureUrl).into(header_img);
