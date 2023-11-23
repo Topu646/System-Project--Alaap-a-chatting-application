@@ -36,7 +36,7 @@ public class EditProfile extends AppCompatActivity {
 
     String name,email,uid;
     Button editstatusbutton,changeprofilebutton;
-    TextView emailtextview,usernametextview;
+    TextView emailtextview,usernametextview,uppernametextview, upperemailtextview;
 
     ImageView imgprofile,header_img;
     EditText nameedittext,emailedittext,bioedittext,socialedittext;
@@ -54,7 +54,8 @@ public class EditProfile extends AppCompatActivity {
 
         usernametextview = findViewById(R.id.usernameid);
         emailtextview = findViewById(R.id.statusid);
-
+        uppernametextview = findViewById(R.id.nametextid);
+        upperemailtextview =findViewById(R.id.emailtextid);
 
 //        nameeditbutton = findViewById(R.id.nameeditbtn);
 //        emaileditbutton = findViewById(R.id.emaileditbtn);
@@ -82,7 +83,8 @@ public class EditProfile extends AppCompatActivity {
 
         usernametextview.setText(name);
         emailtextview.setText(email);
-
+        upperemailtextview.setText(email);
+        uppernametextview.setText(name);
    userRef = FirebaseDatabase.getInstance().getReference().child("user").child(uid);;
 
 
@@ -93,8 +95,8 @@ public class EditProfile extends AppCompatActivity {
                     String name = dataSnapshot.child("username").getValue(String.class);
                     String profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
 
-                    usernametextview.setText(name);
-                    usernametextview.setText(name);
+                    //usernametextview.setText(name);
+
                     if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
                         Picasso.get().load(profilePictureUrl).into(imgprofile);
                         Picasso.get().load(profilePictureUrl).into(header_img);
