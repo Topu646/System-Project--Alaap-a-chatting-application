@@ -237,6 +237,28 @@ public class SignUpActivity extends AppCompatActivity {
                                             preferenceManager.putString("name",name);
                                             preferenceManager.putString("image",encodedImage);
                                             preferenceManager.putString("email",email);
+                                            FirebaseUser firebaseuser = mAuth.getCurrentUser();
+
+                                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                    .setDisplayName(name)
+                                                    .build();
+                                            firebaseuser.updateProfile(profileUpdates)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful())
+                                                            {
+                                                                Log.d(TAG, "User profile updated.");
+                                                            }
+                                                        }
+                                                    });
+//                            user.delete();
+//
+                                            Intent intent = new Intent(SignUpActivity.this, HomeScreen.class);
+                                            intent.putExtra("email",mail);
+                                            intent.putExtra("name",nametext.getText().toString());
+                                            intent.putExtra("password",pass);
+                                            startActivity(intent);
                                             Toast.makeText(getApplicationContext(),"Registration successful",Toast.LENGTH_SHORT).show();
 
                                         }
@@ -248,28 +270,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         }
                                     });
 
-                            FirebaseUser firebaseuser = mAuth.getCurrentUser();
 
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(name)
-                                    .build();
-                            firebaseuser.updateProfile(profileUpdates)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                                 if (task.isSuccessful())
-                                                 {
-                                                     Log.d(TAG, "User profile updated.");
-                                                 }
-                                        }
-                                    });
-//                            user.delete();
-//
-                            Intent intent = new Intent(SignUpActivity.this, HomeScreen.class);
-                            intent.putExtra("email",mail);
-                            intent.putExtra("name",nametext.getText().toString());
-                            intent.putExtra("password",pass);
-                            startActivity(intent);
                         }
                         else{
 
