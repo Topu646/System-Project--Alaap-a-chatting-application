@@ -3,7 +3,7 @@ package com.example.alaap;
 import java.io.Serializable;
 
 public class Users implements Serializable {
-    public String userid,name,email,token;
+    public String userid,name,email,token,image;
 
     public String getUserid() {
         return userid;

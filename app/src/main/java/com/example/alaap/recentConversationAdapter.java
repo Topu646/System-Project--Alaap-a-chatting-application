@@ -1,5 +1,8 @@
 package com.example.alaap;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -14,6 +17,18 @@ public class recentConversationAdapter extends RecyclerView.Adapter<recentConver
 
     private final List<ChatMessage> chatMessages;
     private final ConversationListener conversationListener;
+
+    private Bitmap getConversationImage(String encodedImage)
+    {
+        if (encodedImage != null)
+        {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }else
+        {
+            return  null;
+        }
+    }
     public recentConversationAdapter(List<ChatMessage> chatMessages, ConversationListener conversationListener) {
         this.chatMessages = chatMessages;
         this.conversationListener = conversationListener;
@@ -52,12 +67,14 @@ public class recentConversationAdapter extends RecyclerView.Adapter<recentConver
 
          void setData(ChatMessage chatMessage)
          {
+             binding.imageview.setImageBitmap(getConversationImage(chatMessage.conversationImage));
              binding.nametextview.setText(chatMessage.conversationNmae);
              binding.recentmsgtextview.setText(chatMessage.message);
              binding.getRoot().setOnClickListener(view -> {
                  Users user = new Users();
                  user.userid = chatMessage.conversationId;
                  user.name = chatMessage.conversationNmae;
+                 user.image = chatMessage.conversationImage;
                  conversationListener.onConversationClicked(user);
              });
          }

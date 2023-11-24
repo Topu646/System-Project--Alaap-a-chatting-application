@@ -301,9 +301,11 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
                     chatMessage.recieverId = receiverId;
                     if (preferenceManager.getString("userId").equals(senderId))
                     {
+                        chatMessage.conversationImage = documentChange.getDocument().getString("receiverImage");
                         chatMessage.conversationNmae = documentChange.getDocument().getString("receiverName");
                         chatMessage.conversationId = documentChange.getDocument().getString("receiverId");
                     }else {
+                        chatMessage.conversationImage = documentChange.getDocument().getString("senderImage");
                         chatMessage.conversationNmae = documentChange.getDocument().getString("senderName");
                         chatMessage.conversationId = documentChange.getDocument().getString("senderId");
                     }

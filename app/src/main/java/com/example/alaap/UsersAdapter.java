@@ -1,5 +1,8 @@
 package com.example.alaap;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +39,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         {
             binding.nametextview.setText(users.name);
             binding.emailtextview.setText(users.email);
+            binding.imageview.setImageBitmap(getUserImage(users.image));
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -43,6 +47,19 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
                 }
             });
         }
+    }
+
+    private Bitmap getUserImage(String encodedImage)
+    {
+
+        if (encodedImage != null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        } else {
+            // Handle the case where encodedImage is null
+            return null;
+        }
+
     }
 
     @NonNull

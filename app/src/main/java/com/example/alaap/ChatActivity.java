@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
@@ -58,6 +61,17 @@ public class ChatActivity extends BaseActivity {
         binding.sendbutton.setOnClickListener(view -> sendMessage());
 
     }
+    private Bitmap getBitmapFromEncodedString(String encodedImage)
+    {
+        if (encodedImage != null)
+        {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }else
+        {
+            return  null;
+        }
+    }
 
     private void init()
     {
@@ -65,6 +79,7 @@ public class ChatActivity extends BaseActivity {
         chatMessages = new ArrayList<>();
         chatAdapter = new ChatAdapter(
                 chatMessages,
+                getBitmapFromEncodedString(recieverUser.image),
                 preferenceManager.getString("userId")
         );
         binding.chatrecyclerview.setAdapter(chatAdapter);
@@ -175,6 +190,12 @@ public class ChatActivity extends BaseActivity {
 
                 }
                 recieverUser.token = value.getString(Constants.KEY_FCM_TOKEN);
+                if (recieverUser.image == null)
+                {
+                    recieverUser.image = value.getString("image");
+                    chatAdapter.setReceiverProfileImage(getBitmapFromEncodedString(recieverUser.image));
+                    chatAdapter.notifyItemRangeChanged(0,chatMessages.size() );
+                }
             }
             if (isReceiverAvailable)
             {
@@ -212,7 +233,9 @@ public class ChatActivity extends BaseActivity {
             conversation.put("senderId",preferenceManager.getString("userId"));
             conversation.put("senderName",preferenceManager.getString("name"));
             conversation.put("receiverId",recieverUser.userid);
+            conversation.put("senderImage",preferenceManager.getString(Constants.KEY_IMAGE));
             conversation.put("receiverName",recieverUser.name);
+            conversation.put("receiverImage",recieverUser.image);
             conversation.put("lastMessage",binding.messageEditText.getText().toString());
             conversation.put("timestamp",new Date());
             addConversation(conversation);

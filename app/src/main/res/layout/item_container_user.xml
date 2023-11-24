@@ -16,11 +16,12 @@
         android:id="@+id/imagecardview"
         >
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/logo_color"
             android:id="@+id/imageview"
+            android:scaleType="centerCrop"
             />
 
     </androidx.cardview.widget.CardView>

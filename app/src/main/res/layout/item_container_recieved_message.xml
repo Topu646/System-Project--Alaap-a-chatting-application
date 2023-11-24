@@ -12,11 +12,12 @@
         app:cardCornerRadius="100dp"
         >
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageview"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/logo_color"
+            android:scaleType="centerCrop"
 
             />
 
