@@ -1,5 +1,7 @@
 package com.example.alaap;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +30,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -42,7 +51,10 @@ public class EditProfile extends AppCompatActivity {
     EditText nameedittext,emailedittext,bioedittext,socialedittext;
     private Uri imagePath;
     FirebaseAuth mauth;
-    DatabaseReference databaseReference,userRef;
+    FirebaseFirestore db;
+    DatabaseReference databaseReference;
+   // StorageReference userRef;
+   DocumentReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,36 +97,70 @@ public class EditProfile extends AppCompatActivity {
         emailtextview.setText(email);
         upperemailtextview.setText(email);
         uppernametextview.setText(name);
-   userRef = FirebaseDatabase.getInstance().getReference().child("user").child(uid);;
+    //    userRef = FirebaseDatabase.getInstance().getReference().child("user").child(uid);
+
+        db = FirebaseFirestore.getInstance();
+        userRef = db.collection("users").document(uid);
 
 
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String name = dataSnapshot.child("username").getValue(String.class);
-                    String profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+//                    String name = documentSnapshot.getString("name");
+//                    String profilePictureUrl = documentSnapshot.getString("image");
 
-                    //usernametextview.setText(name);
+                    String name = documentSnapshot.getString("name");
+                    String profilePictureUrl = documentSnapshot.getString("image");
 
+                    // Check if the profilePictureUrl is not null or empty
                     if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+                        // Use Picasso to load and display the profile picture
                         Picasso.get().load(profilePictureUrl).into(imgprofile);
                         Picasso.get().load(profilePictureUrl).into(header_img);
+                    } else {
+                        // Handle the case where the profile picture URL is missing
                     }
-                    else {
-
-                    }
-
                 } else {
-                    // Handle the case where the user data doesn't exist
+                    // Handle the case where the user document doesn't exist
                 }
             }
-
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle any errors
+            public void onFailure(@NonNull Exception e) {
+                // Handle any errors that may occur during the Firestore query
+                Log.e(TAG, "Error retrieving user document: " + e.getMessage());
+
             }
         });
+
+//        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    String name = dataSnapshot.child("username").getValue(String.class);
+//                    String profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
+//
+//                    //usernametextview.setText(name);
+//
+//                    if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+//                        Picasso.get().load(profilePictureUrl).into(imgprofile);
+//                        Picasso.get().load(profilePictureUrl).into(header_img);
+//                    }
+//                    else {
+//
+//                    }
+//
+//                } else {
+//                    // Handle the case where the user data doesn't exist
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                // Handle any errors
+//            }
+//        });
 
 
 
@@ -145,7 +191,7 @@ public class EditProfile extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Uri> task) {
                                 if (task.isSuccessful()){
-                                    updateProfilePicture(task.getResult().toString());
+                                    //updateProfilePicture(task.getResult().toString());
                                 }
 
                             }
@@ -162,37 +208,37 @@ public class EditProfile extends AppCompatActivity {
             });
         }
 
-        private void updateProfilePicture(String url) {
-            FirebaseDatabase.getInstance().getReference("user/"+uid+"/profilePicture").setValue(url);
-
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        String name = dataSnapshot.child("username").getValue(String.class);
-                        String profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
-
-                        usernametextview.setText(name);
-                        usernametextview.setText(name);
-                        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
-                            Picasso.get().load(profilePictureUrl).into(imgprofile);
-                            Picasso.get().load(profilePictureUrl).into(header_img);
-                        }
-                        else {
-
-                        }
-
-                    } else {
-                        // Handle the case where the user data doesn't exist
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    // Handle any errors
-                }
-            });
-        }
+//        private void updateProfilePicture(String url) {
+//            FirebaseDatabase.getInstance().getReference("user/"+uid+"/profilePicture").setValue(url);
+//
+//            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    if (dataSnapshot.exists()) {
+//                        String name = dataSnapshot.child("username").getValue(String.class);
+//                        String profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
+//
+//                        usernametextview.setText(name);
+//                        usernametextview.setText(name);
+//                        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+//                            Picasso.get().load(profilePictureUrl).into(imgprofile);
+//                            Picasso.get().load(profilePictureUrl).into(header_img);
+//                        }
+//                        else {
+//
+//                        }
+//
+//                    } else {
+//                        // Handle the case where the user data doesn't exist
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//                    // Handle any errors
+//                }
+//            });
+//        }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

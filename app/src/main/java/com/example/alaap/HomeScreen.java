@@ -65,7 +65,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
     String email, password, name;
     ImageView profileimageview,signout;
 
-    Button addpostbutton;
+    Button addpostbutton,newsfeedbutton;
     String namefromgoogle, emailfromgoogle;
     FirebaseAuth mauth;
 //    TextView demotext, demotext2;
@@ -120,6 +120,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         profileimageview = findViewById(R.id.profileicon);
 
         addpostbutton = findViewById(R.id.addpostbuttonid);
+        newsfeedbutton = findViewById(R.id.newsfeedid);
 
         signout = findViewById(R.id.imageSignout);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +137,18 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         addpostbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String name = preferenceManager.getString("name");
                 Intent intent = new Intent(HomeScreen.this,AddPostActivity.class);
+                intent.putExtra("name",name);
+                startActivity(intent);
+            }
+        });
+
+
+        newsfeedbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeScreen.this,NewsFeedactivity.class);
                 startActivity(intent);
             }
         });
