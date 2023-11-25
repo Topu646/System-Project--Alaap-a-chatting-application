@@ -4,47 +4,65 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="2dp"
-    android:background="#F3CBFA">
+    android:background="#C6C6C6">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="100dp"
-        android:layout_margin="5dp"
-        android:elevation="10dp"
-        android:id="@+id/imagecardview"
-        >
+   <androidx.cardview.widget.CardView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:cardCornerRadius="20dp"
+       >
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/logo_color"
-            android:id="@+id/imageview"
-            android:scaleType="centerCrop"
-            />
+       <RelativeLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
 
-    </androidx.cardview.widget.CardView>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/imagecardview"
-        android:text="demoName"
-        android:padding="5dp"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/nametextview"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/nametextview"
-        android:layout_toRightOf="@+id/imagecardview"
-        android:text="demo@email.com"
-        android:padding="5dp"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/recentmsgtextview"
+           >
 
-        />
+           <androidx.cardview.widget.CardView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               app:cardCornerRadius="100dp"
+               android:layout_margin="5dp"
+               android:elevation="10dp"
+               android:id="@+id/imagecardview"
+               >
 
+               <de.hdodenhof.circleimageview.CircleImageView
+                   android:layout_width="50dp"
+                   android:layout_height="50dp"
+                   android:src="@drawable/logo_color"
+                   android:id="@+id/imageview"
+                   android:scaleType="centerCrop"
+                   />
+
+           </androidx.cardview.widget.CardView>
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_toRightOf="@+id/imagecardview"
+               android:text="demoName"
+               android:padding="5dp"
+               android:textStyle="bold"
+               android:textSize="15sp"
+               android:layout_marginLeft="5dp"
+               android:id="@+id/nametextview"
+               />
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/nametextview"
+               android:layout_toRightOf="@+id/imagecardview"
+               android:text="demo@email.com"
+               android:padding="5dp"
+               android:layout_marginLeft="5dp"
+               android:id="@+id/recentmsgtextview"
+
+               />
+
+
+
+       </RelativeLayout>
+
+
+   </androidx.cardview.widget.CardView>
 </RelativeLayout>

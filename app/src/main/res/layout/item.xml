@@ -4,10 +4,12 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="8dp"
+    android:padding="15dp"
     app:cardCornerRadius="8dp"
     android:layout_margin="16dp">
 
     <LinearLayout
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -23,11 +25,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name : "
+                android:text="Posted by : "
                 android:fontFamily="sans-serif-black"
                 android:textSize="16dp"
                 android:textColor="@color/black"
-                android:textStyle="bold"/>
+                />
 
             <TextView
                 android:id="@+id/usernameid"
@@ -58,6 +60,7 @@
 
 
     </LinearLayout>
+
 
 
 </androidx.cardview.widget.CardView>
