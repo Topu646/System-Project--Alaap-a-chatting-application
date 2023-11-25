@@ -128,7 +128,7 @@
         >
 
        <RelativeLayout
-           android:layout_width="wrap_content"
+           android:layout_width="match_parent"
            android:layout_height="80dp"
 
            >
@@ -137,7 +137,7 @@
                android:id="@+id/plusbtn"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_alignParentRight="true"
+               android:layout_alignParentEnd="true"
                android:layout_alignParentBottom="true"
 
                android:layout_marginStart="10dp"
@@ -167,7 +167,7 @@
                android:src="@drawable/img_1"
                android:text="Add post"
                android:textColor="@color/white"
-               android:textStyle="bold"></Button>
+               android:textStyle="bold"/>
 
 
            <Button
@@ -189,7 +189,7 @@
                android:src="@drawable/img_1"
                android:text="Newsfeed"
                android:textColor="@color/white"
-               android:textStyle="bold"></Button>
+               android:textStyle="bold"/>
 
 
        </RelativeLayout>

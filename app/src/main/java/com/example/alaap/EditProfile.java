@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ public class EditProfile extends AppCompatActivity {
     TextView emailtextview,usernametextview,uppernametextview, upperemailtextview;
 
     ImageView imgprofile,header_img;
+    private ImageButton backbutton;
     EditText nameedittext,emailedittext,bioedittext,socialedittext;
     private Uri imagePath;
     FirebaseAuth mauth;
@@ -68,6 +70,11 @@ public class EditProfile extends AppCompatActivity {
         emailtextview = findViewById(R.id.statusid);
         uppernametextview = findViewById(R.id.nametextid);
         upperemailtextview =findViewById(R.id.emailtextid);
+
+        backbutton = findViewById(R.id.back);
+        backbutton.setOnClickListener(view -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
 
 //        nameeditbutton = findViewById(R.id.nameeditbtn);
 //        emaileditbutton = findViewById(R.id.emaileditbtn);

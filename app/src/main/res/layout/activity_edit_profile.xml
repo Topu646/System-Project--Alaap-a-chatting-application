@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,14 +7,47 @@
     android:layout_weight="1"
     tools:context=".EditProfile">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/topbarrelative"
+        android:background="@color/my_primary"
+        >
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:layout_centerVertical="true"
+            android:backgroundTint="@color/my_primary"
+            android:id="@+id/back"
+            android:padding="10dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/back"
+            android:text="My Profile"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:background="@color/my_primary"
+            android:padding="10dp"
+            android:id="@+id/textview"
+            />
+
+
+    </RelativeLayout>
+
     <FrameLayout
+        android:layout_below="@id/topbarrelative"
         android:id="@+id/main_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="-100dp"
         android:background="#394AA5">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
@@ -131,7 +164,7 @@
                         android:text="Name"
                         android:textColor="@color/black"
                         android:textSize="15dp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold"/>
 
 <!--                    <ImageView-->
 <!--                        android:id="@+id/nameeditbtn"-->
@@ -168,7 +201,7 @@
                         android:text="Email"
                         android:textColor="@color/black"
                         android:textSize="15dp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold"/>
 
 
 
@@ -199,7 +232,10 @@
                         android:text="Bio"
                         android:textColor="@color/black"
                         android:textSize="15dp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold"
+                        />
+
+
 
 
 
@@ -231,7 +267,7 @@
                         android:text="Add social media links"
                         android:textColor="@color/black"
                         android:textSize="15dp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold"/>
 
 
                     <TextView
@@ -302,7 +338,7 @@
             <!--                tools:ignore="MissingConstraints"-->
             <!--                tools:layout_editor_absoluteX="95dp"-->
             <!--                tools:layout_editor_absoluteY="48dp" />-->
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
     </FrameLayout>
 
     <!--    <com.google.android.material.divider.MaterialDivider-->
@@ -444,4 +480,4 @@
 
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>

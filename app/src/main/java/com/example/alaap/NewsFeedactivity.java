@@ -66,7 +66,7 @@ public class NewsFeedactivity extends AppCompatActivity {
                 list.clear();
 
                 if (snapshot.getChildrenCount() == 0) {
-                    Toast.makeText(getApplicationContext(),"No data availbale", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"No data available", Toast.LENGTH_SHORT).show();
                 } else {
                     for (DataSnapshot datasnapshot1 : snapshot.getChildren()) {
                         PostItem item = datasnapshot1.getValue(PostItem.class);
