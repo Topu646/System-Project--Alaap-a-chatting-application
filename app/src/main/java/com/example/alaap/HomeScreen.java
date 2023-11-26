@@ -138,6 +138,13 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 binding.demotext.setText(documentSnapshot.getString("name"));
                 binding.demotext2.setText(documentSnapshot.getString("email"));
+                String imagestring = documentSnapshot.getString("image");
+
+                if (imagestring != null) {
+                    byte[] bytes = Base64.decode(imagestring, Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    binding.profileicon.setImageBitmap(bitmap);
+                }
             }
         });
 

@@ -2,6 +2,8 @@ package com.example.alaap;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,9 +13,11 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,13 +47,17 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.UUID;
 
 public class EditProfile extends AppCompatActivity {
 
     String name,email,uid,bio;
+    private String encodedImage;
     String editedname,edittedemail,editedbio;
     Button editstatusbutton,changeprofilebutton;
     TextView emailtextview,usernametextview,uppernametextview, upperemailtextview,biotextview;
@@ -59,6 +67,9 @@ public class EditProfile extends AppCompatActivity {
     FirebaseFirestore firebaseFirestore;
 
     ImageView nameeditimageview,emaileditimageview,bioeditimageview;
+
+    private Bitmap selectedimagebitmap;
+    private String selectedimagebase64;
 
     private ImageButton backbutton;
 
@@ -103,17 +114,19 @@ public class EditProfile extends AppCompatActivity {
                  emailtextview.setText(documentSnapshot.getString("email"));
                  upperemailtextview.setText(documentSnapshot.getString("email"));
                  uppernametextview.setText(documentSnapshot.getString("name"));
+
+                String imagestring = documentSnapshot.getString("image");
+
+                if (imagestring != null) {
+                    byte[] bytes = Base64.decode(imagestring, Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    imgprofile.setImageBitmap(bitmap);
+                    header_img.setImageBitmap(bitmap);
+                }
             }
         });
 
 
-//       nameeditimageview = findViewById(R.id.nameeditbtn);
-//       emaileditimageview = findViewById(R.id.emaileditbtn);
-//       bioeditimageview = findViewById(R.id.bioeditbtn);
-//
-//       nameedittext = findViewById(R.id.nameedittext);
-//       emailedittext = findViewById(R.id.emailedittext);
-//       bioedittext = findViewById(R.id.bioedittext);
 
         backbutton = findViewById(R.id.back);
         backbutton.setOnClickListener(view -> {
@@ -136,37 +149,6 @@ public class EditProfile extends AppCompatActivity {
 
 
 
-
-
-//        nameeditimageview.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                nameedittext.setVisibility(View.VISIBLE);
-//                usernametextview.setText("");
-//                editedname = nameedittext.getText().toString().trim();
-//            }
-//        });
-//
-//        emaileditimageview.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                emailedittext.setVisibility(View.VISIBLE);
-//                edittedemail = emailedittext.getText().toString().trim();
-//                emailtextview.setText("");
-//            }
-//        });
-//
-//        bioeditimageview.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                bioedittext.setVisibility(View.VISIBLE);
-//                biotextview.setText("");
-//                editedbio = bioedittext.getText().toString().trim();
-//            }
-//        });
-
-
-
         changeprofilebutton = findViewById(R.id.changeProfilePictureButton);
 
         Bundle bundle = getIntent().getExtras();
@@ -176,8 +158,7 @@ public class EditProfile extends AppCompatActivity {
             bio = bundle.getString("bio");
             biotextview.setText(bio);
         }
-        //nametextview.setText(name);
-        //emailtextview.setText(email);
+
 
         usernametextview.setText(name);
         emailtextview.setText(email);
@@ -202,8 +183,9 @@ public class EditProfile extends AppCompatActivity {
                     // Check if the profilePictureUrl is not null or empty
                     if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
                         // Use Picasso to load and display the profile picture
-                        Picasso.get().load(profilePictureUrl).into(imgprofile);
-                        Picasso.get().load(profilePictureUrl).into(header_img);
+                       // Picasso.get().load(profilePictureUrl).into(imgprofile);
+                       //
+                        // Picasso.get().load(profilePictureUrl).into(header_img);
                     } else {
                         // Handle the case where the profile picture URL is missing
                     }
@@ -253,9 +235,14 @@ public class EditProfile extends AppCompatActivity {
         changeprofilebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent photoIntent = new Intent(Intent.ACTION_PICK);
-                photoIntent.setType("image/*");
-                startActivityForResult(photoIntent, 1);
+//                Intent photoIntent = new Intent(Intent.ACTION_PICK);
+//                photoIntent.setType("image/*");
+//                startActivityForResult(photoIntent, 1);
+
+
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                pickImage.launch(intent);
             }
         });
 
@@ -268,6 +255,7 @@ public class EditProfile extends AppCompatActivity {
             ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading....");
             progressDialog.show();
+
 
             FirebaseStorage.getInstance().getReference("images/"+ UUID.randomUUID().toString()).putFile(imagePath).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -326,27 +314,85 @@ public class EditProfile extends AppCompatActivity {
 //            });
 //        }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data!=null){
-            imagePath = data.getData();
-            getImageInImageView();
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1 && resultCode == RESULT_OK && data!=null){
+//            imagePath = data.getData();
+//            getImageInImageView();
+//            uploadImage();
+//        }
+//    }
 
-            uploadImage();
-        }
+
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK)
+                {
+                    if (result.getData() != null)
+                    {
+                        Uri imageuri = result.getData().getData();
+                        try {
+                            InputStream inputStream = getContentResolver().openInputStream(imageuri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            imgprofile.setImageBitmap(bitmap);
+                            header_img.setImageBitmap(bitmap);
+                            encodedImage = encodeImage(bitmap);
+
+                            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                            firestore.collection("users").document(uid).update("image",encodedImage);
+
+                        }catch (FileNotFoundException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+    );
+
+
+    private String  encodeImage(Bitmap bitmap)
+    {
+        int previewWidth = 150;
+        int previewHeight = bitmap.getHeight() + previewWidth/ bitmap.getWidth();
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap,previewWidth,previewHeight,false);
+        ByteArrayOutputStream byteArrayOutputStream= new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(bytes,Base64.DEFAULT);
     }
 
-    private void getImageInImageView() {
-
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),imagePath);
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-
-        imgprofile.setImageBitmap(bitmap);
-    }
+//    private void getImageInImageView() {
+//
+//        Bitmap bitmap = null;
+//        try {
+//            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),imagePath);
+//        }
+//        catch (IOException e){
+//            e.printStackTrace();
+//        }
+//
+//        if(bitmap != null)
+//        {
+//            //imgprofile.setImageBitmap(bitmap);
+//           // header_img.setImageBitmap(bitmap);
+//
+////            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+////            bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+////            byte[] bytearray = byteArrayOutputStream.toByteArray();
+////            selectedimagebase64 = Base64.encodeToString(bytearray, Base64.DEFAULT);
+//
+//            Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap,previewWidth,previewHeight,false);
+//            ByteArrayOutputStream byteArrayOutputStream= new ByteArrayOutputStream();
+//            previewBitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
+//            byte[] bytes = byteArrayOutputStream.toByteArray();
+//            return Base64.encodeToString(bytes,Base64.DEFAULT);
+//
+//            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+//            firestore.collection("users").document(uid).update("image",selectedimagebase64);
+//        }
+//
+//    }
 }
