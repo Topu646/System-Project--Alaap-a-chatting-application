@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,14 +7,47 @@
     android:layout_weight="1"
     tools:context=".EditProfile">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/topbarrelative"
+        android:background="@color/my_primary"
+        >
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:layout_centerVertical="true"
+            android:backgroundTint="@color/my_primary"
+            android:id="@+id/back"
+            android:padding="10dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/back"
+            android:text="My Profile"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:background="@color/my_primary"
+            android:padding="10dp"
+            android:id="@+id/textview"
+            />
+
+
+    </RelativeLayout>
+
     <FrameLayout
+        android:layout_below="@id/topbarrelative"
         android:id="@+id/main_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="-100dp"
         android:background="#394AA5">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
@@ -78,8 +111,8 @@
                     android:id="@+id/profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:layout_marginTop="0dp"
+                    android:layout_marginRight="50dp"
                     android:gravity="center">
 
                     <!--                    <ImageView-->
@@ -131,17 +164,17 @@
                         android:text="Name"
                         android:textColor="@color/black"
                         android:textSize="15dp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/nameeditbtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/name"
-                        android:layout_marginStart="121dp"
-                        android:layout_marginTop="-28dp"
-                        android:layout_toEndOf="@id/usernameid"
-                        android:src="@drawable/baseline_edit_24" />
+                    <!--                    <ImageView-->
+                    <!--                        android:id="@+id/nameeditbtn"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_below="@id/name"-->
+                    <!--                        android:layout_marginStart="121dp"-->
+                    <!--                        android:layout_marginTop="-28dp"-->
+                    <!--                        android:layout_toEndOf="@id/usernameid"-->
+                    <!--                        android:src="@drawable/baseline_edit_24" />-->
 
                     <TextView
                         android:id="@+id/usernameid"
@@ -154,17 +187,17 @@
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/nameedittext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/name"
-                        android:layout_marginStart="120dp"
-                        android:layout_marginTop="0dp"
-                        android:textSize="15sp"
-                        android:hint="Edit name"
-                        android:visibility="visible"
-                        android:textStyle="bold"/>
+                    <!--                    <EditText-->
+                    <!--                        android:id="@+id/nameedittext"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_below="@id/name"-->
+                    <!--                        android:layout_marginStart="120dp"-->
+                    <!--                        android:layout_marginTop="0dp"-->
+                    <!--                        android:textSize="15sp"-->
+                    <!--                        android:hint="Edit name"-->
+                    <!--                        android:visibility="gone"-->
+                    <!--                        android:textStyle="bold"/>-->
 
 
                     <TextView
@@ -178,18 +211,18 @@
                         android:text="Email"
                         android:textColor="@color/black"
                         android:textSize="15dp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold" />
 
 
-                    <ImageView
-                        android:id="@+id/emaileditbtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/name"
-                        android:layout_marginStart="121dp"
-                        android:layout_marginTop="36dp"
-                        android:layout_toEndOf="@id/usernameid"
-                        android:src="@drawable/baseline_edit_24" />
+                    <!--                    <ImageView-->
+                    <!--                        android:id="@+id/emaileditbtn"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_below="@id/name"-->
+                    <!--                        android:layout_marginStart="121dp"-->
+                    <!--                        android:layout_marginTop="36dp"-->
+                    <!--                        android:layout_toEndOf="@id/usernameid"-->
+                    <!--                        android:src="@drawable/baseline_edit_24" />-->
 
                     <TextView
                         android:id="@+id/statusid"
@@ -204,20 +237,17 @@
                         android:textStyle="bold" />
 
 
-                    <EditText
-                        android:id="@+id/emailedittext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/email"
-                        android:layout_marginStart="120dp"
-                        android:layout_marginTop="0dp"
-                        android:textSize="15sp"
-                        android:hint="Edit email"
-                        android:visibility="gone"
-                        android:textStyle="bold"/>
-
-
-
+                    <!--                    <EditText-->
+                    <!--                        android:id="@+id/emailedittext"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_below="@id/email"-->
+                    <!--                        android:layout_marginStart="120dp"-->
+                    <!--                        android:layout_marginTop="0dp"-->
+                    <!--                        android:textSize="15sp"-->
+                    <!--                        android:hint="Edit email"-->
+                    <!--                        android:visibility="gone"-->
+                    <!--                        android:textStyle="bold"/>-->
 
 
                     <TextView
@@ -231,18 +261,18 @@
                         android:text="Bio"
                         android:textColor="@color/black"
                         android:textSize="15dp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold" />
 
 
-                    <ImageView
-                        android:id="@+id/bioeditbtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/email"
-                        android:layout_marginStart="118dp"
-                        android:layout_marginTop="36dp"
-                        android:layout_toEndOf="@id/usernameid"
-                        android:src="@drawable/baseline_edit_24" />
+                    <!--                    <ImageView-->
+                    <!--                        android:id="@+id/bioeditbtn"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_below="@id/email"-->
+                    <!--                        android:layout_marginStart="118dp"-->
+                    <!--                        android:layout_marginTop="36dp"-->
+                    <!--                        android:layout_toEndOf="@id/usernameid"-->
+                    <!--                        android:src="@drawable/baseline_edit_24" />-->
 
                     <TextView
                         android:id="@+id/bioid"
@@ -256,245 +286,21 @@
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
-
-                    <EditText
-                        android:id="@+id/bioedittext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/bio"
-                        android:layout_marginStart="120dp"
-                        android:layout_marginTop="0dp"
-                        android:textSize="15sp"
-                        android:visibility="gone"
-                        android:hint="Edit bio"
-                        android:textStyle="bold"/>
-
-
-
-
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/socialid"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_below="@id/bioid"-->
-<!--                        android:layout_marginStart="120dp"-->
-<!--                        android:layout_marginTop="20dp"-->
-<!--                        android:fontFamily="sans-serif-black"-->
-<!--                        android:text="Add social media links"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="15dp"-->
-<!--                        android:textStyle="bold"></TextView>-->
-
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/linkid"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_below="@id/socialid"-->
-<!--                        android:layout_marginStart="120dp"-->
-<!--                        android:layout_marginTop="0dp"-->
-<!--                        android:fontFamily="sans-serif-black"-->
-<!--                        android:text="https://www.facebook.com/?ref=homescreenpwa"-->
-<!--                        android:textSize="14sp"-->
-<!--                        android:textStyle="bold" />-->
-
-
-
-
-                    <!--                    <ImageView-->
-<!--                        android:id="@+id/imageView"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_above="@+id/name"-->
-<!--                        android:layout_below="@+id/changeProfilePictureButton"-->
-<!--                        android:layout_alignParentEnd="true"-->
-<!--                        android:layout_marginTop="-30dp"-->
-<!--                        android:layout_marginEnd="387dp"-->
-<!--                        android:layout_marginBottom="36dp"-->
-<!--                        app:srcCompat="@drawable/baseline_edit_24" />-->
-
-                    <!--                    <TextView-->
-                    <!--                        android:id="@+id/contact_list"-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_below="@+id/editStatusButton"-->
-                    <!--                        android:layout_marginStart="20dp"-->
-                    <!--                        android:layout_marginTop="20dp"-->
-                    <!--                        android:layout_marginEnd="20dp"-->
-                    <!--                        android:layout_marginBottom="20dp"-->
-                    <!--                        android:text="Contact List"-->
-                    <!--                        android:textColor="#9377E3"-->
-                    <!--                        android:textSize="20dp"-->
-                    <!--                        android:textStyle="bold" />-->
-
-                    <!--                    <androidx.core.widget.NestedScrollView-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="match_parent"-->
-                    <!--                        android:layout_below="@+id/contact_list"-->
-                    <!--                        android:layout_marginTop="10dp">-->
-
-                    <!--                        &lt;!&ndash; Your RecyclerView goes here &ndash;&gt;-->
-                    <!--                        <androidx.recyclerview.widget.RecyclerView-->
-                    <!--                            android:id="@+id/recyclerView"-->
-                    <!--                            android:layout_width="match_parent"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:layout_margin="20dp"/>-->
-
-                    <!--                    </androidx.core.widget.NestedScrollView>-->
                 </RelativeLayout>
+
             </androidx.cardview.widget.CardView>
 
-            <!--            <TextView-->
-            <!--                android:id="@+id/emailtextid"-->
-            <!--                android:layout_width="209dp"-->
-            <!--                android:layout_height="24dp"-->
-            <!--                android:text="proloy@gmail.com"-->
-            <!--                android:textColor="#FFFFFF"-->
-            <!--                android:textSize="16dp"-->
-            <!--                tools:ignore="MissingConstraints"-->
-            <!--                tools:layout_editor_absoluteX="95dp"-->
-            <!--                tools:layout_editor_absoluteY="48dp" />-->
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
     </FrameLayout>
 
-    <!--    <com.google.android.material.divider.MaterialDivider-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="2dp"-->
-    <!--        android:layout_above="@id/bottom_navigation"-->
-    <!--        android:id="@+id/divider" />-->
+    <Button
+        android:id="@+id/editstatusbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="620dp"
+        android:layout_marginRight="70dp"
+        android:background="@drawable/background_shape"
+        android:text="edit status"></Button>
 
-    <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_alignParentBottom="true"-->
-    <!--        android:background="?attr/selectableItemBackgroundBorderless"-->
-    <!--        android:id="@+id/bottom_navigation"/>-->
-    <!--        app:menu="@menu/bottom_navigation_menu" -->
-
-
-
-
-<!--    <FrameLayout-->
-<!--        android:id="@+id/main_frame_layout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_above="@id/divider"-->
-<!--        android:layout_marginBottom="0dp"-->
-<!--        android:background="#394AA5">-->
-
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                tools:ignore="MissingConstraints">-->
-<!--                <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                    android:id="@+id/roundImageView"-->
-<!--                    android:layout_width="46dp"-->
-<!--                    android:layout_height="46dp"-->
-<!--                    android:layout_margin="16dp"-->
-<!--                    android:background="@drawable/background_shape" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView3"-->
-<!--                    android:layout_width="220dp"-->
-<!--                    android:layout_height="27dp"-->
-<!--                    android:text="Steve Smith"-->
-<!--                    android:textColor="#FFFFFF"-->
-<!--                    android:textSize="20dp"-->
-<!--                    android:layout_marginTop="24dp"-->
-<!--                    tools:ignore="MissingConstraints"-->
-<!--                    tools:layout_editor_absoluteY="16dp" />-->
-
-<!--            </LinearLayout>-->
-
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginTop="80dp"-->
-<!--                android:background="@drawable/card_view_shape"-->
-<!--                app:cardCornerRadius="30dp"-->
-<!--                >-->
-
-<!--                <RelativeLayout-->
-<!--                    android:id="@+id/profile"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:gravity="center">-->
-
-<!--                    <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                        android:id="@+id/profilePicture"-->
-<!--                        android:layout_width="120dp"-->
-<!--                        android:layout_height="120dp"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_marginStart="20dp"-->
-<!--                        android:layout_marginEnd="20dp"-->
-<!--                        android:layout_marginBottom="250dp"-->
-<!--                        android:background="@drawable/oval_background"-->
-<!--                        android:backgroundTint="#B80E0E"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/profileicon1" />-->
-
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/username"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_below="@id/profilePicture"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:text="Username"-->
-<!--                        android:textSize="18sp"-->
-<!--                        android:textStyle="bold"-->
-<!--                        android:textColor="@color/black"/>-->
-
-<!--&lt;!&ndash;                    <TextView&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:id="@+id/contact_list"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:layout_below="@+id/username"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:layout_marginStart="20dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:layout_marginTop="20dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:layout_marginEnd="20dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:layout_marginBottom="20dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:text="Contact List"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:textColor="#9377E3"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:textSize="20dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:textStyle="bold" />&ndash;&gt;-->
-
-
-<!--                    &lt;!&ndash; Your RecyclerView goes here &ndash;&gt;-->
-<!--&lt;!&ndash;                    <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:id="@+id/recyclerView"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:layout_height="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;                        android:layout_below="@+id/contact_list" />&ndash;&gt;-->
-
-
-<!--                </RelativeLayout>-->
-<!--            </androidx.cardview.widget.CardView>-->
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-<!--    </FrameLayout>-->
-
-<!--    <com.google.android.material.divider.MaterialDivider-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="2dp"-->
-<!--        android:layout_above="@id/bottom_navigation"-->
-<!--        android:id="@+id/divider" />-->
-
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:background="?attr/selectableItemBackgroundBorderless"-->
-<!--        android:id="@+id/bottom_navigation"-->
-<!--        app:menu="@menu/bottom_navigation_menu" />-->
-
-<!--</RelativeLayout>-->
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>

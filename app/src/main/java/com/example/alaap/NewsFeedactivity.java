@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,7 +23,7 @@ import java.util.List;
 public class NewsFeedactivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-
+    private ImageButton backbutton;
     private ArrayList<PostItem>list;
      private CustomAdapter customAdapter;
     DatabaseReference databaseReference;
@@ -34,7 +35,10 @@ public class NewsFeedactivity extends AppCompatActivity {
         setContentView(R.layout.activity_news_feedactivity);
 
         recyclerView = findViewById(R.id.recyclerviewid);
-
+        backbutton = findViewById(R.id.back);
+        backbutton.setOnClickListener(view -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
         Bundle bundle = getIntent().getExtras();
         if(bundle != null)
         {
@@ -43,8 +47,10 @@ public class NewsFeedactivity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Post");
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
         list = new ArrayList<>();
 
         customAdapter = new CustomAdapter(NewsFeedactivity.this,list);
@@ -60,7 +66,7 @@ public class NewsFeedactivity extends AppCompatActivity {
                 list.clear();
 
                 if (snapshot.getChildrenCount() == 0) {
-                    Toast.makeText(getApplicationContext(),"No data availbale", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"No data available", Toast.LENGTH_SHORT).show();
                 } else {
                     for (DataSnapshot datasnapshot1 : snapshot.getChildren()) {
                         PostItem item = datasnapshot1.getValue(PostItem.class);

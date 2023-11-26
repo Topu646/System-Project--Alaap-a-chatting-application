@@ -7,7 +7,8 @@
     android:layout_weight="1"
     android:orientation="vertical"
     android:animateLayoutChanges="true"
-    android:backgroundTint="@color/test"
+
+    android:background="#C6C6C6"
     tools:context=".HomeScreen">
 
 
@@ -101,6 +102,7 @@
         android:orientation="vertical"
         android:padding="5dp"
         android:overScrollMode="never"
+        android:layout_above="@+id/bottombarcardview"
         android:visibility="gone"
         android:id="@+id/conversationsRecyclerview"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -115,56 +117,84 @@
 
         />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/plusbtn"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:id="@+id/bottombarcardview"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
+        android:backgroundTint="#3E3743"
+        app:cardCornerRadius="20dp"
 
-        android:layout_marginBottom="5dp"
-        android:backgroundTint="@color/my_primary"
-        android:padding="10dp"
-        android:src="@drawable/round_add_24"
-        tools:ignore="MissingConstraints" />
+        >
 
-    <Button
-        android:background="@drawable/background_shape"
-        android:layout_width="wrap_content"
-        android:id="@+id/addpostbuttonid"
-        android:layout_height="wrap_content"
-        android:src="@drawable/img_1"
-        android:text="Add post"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-black"
-        android:textColor="@color/purple_700"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentBottom="true"
-        android:padding="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp">
-    </Button>
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="80dp"
+
+           >
+
+           <com.google.android.material.floatingactionbutton.FloatingActionButton
+               android:id="@+id/plusbtn"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentEnd="true"
+               android:layout_alignParentBottom="true"
+
+               android:layout_marginStart="10dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginEnd="10dp"
+               android:layout_marginBottom="10dp"
+               android:backgroundTint="@color/my_primary"
+               android:padding="10dp"
+
+               android:src="@drawable/round_add_24"
+               tools:ignore="MissingConstraints" />
+
+           <Button
+               android:id="@+id/addpostbuttonid"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentLeft="true"
+               android:layout_centerVertical="true"
+               android:layout_marginStart="10dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginEnd="10dp"
+               android:layout_marginBottom="10dp"
+               android:background="@drawable/background_shape"
+               android:backgroundTint="@color/my_primary"
+               android:fontFamily="sans-serif-black"
+               android:padding="10dp"
+               android:src="@drawable/img_1"
+               android:text="Add post"
+               android:textColor="@color/white"
+               android:textStyle="bold"/>
 
 
-    <Button
-        android:background="@drawable/background_shape"
-        android:layout_width="wrap_content"
-        android:id="@+id/newsfeedid"
-        android:layout_height="wrap_content"
-        android:src="@drawable/img_1"
-        android:text="Newsfeed"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-black"
-        android:textColor="@color/purple_700"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentBottom="true"
-        android:padding="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="160dp">
-    </Button>
+           <Button
+               android:id="@+id/newsfeedid"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
 
+               android:layout_centerHorizontal="true"
+               android:layout_centerVertical="true"
+               android:layout_marginStart="10dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginEnd="10dp"
+               android:layout_marginBottom="10dp"
+               android:background="@drawable/background_shape"
+               android:backgroundTint="#2B7C60"
+               android:fontFamily="sans-serif-black"
+
+               android:padding="10dp"
+               android:src="@drawable/img_1"
+               android:text="Newsfeed"
+               android:textColor="@color/white"
+               android:textStyle="bold"/>
+
+
+       </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

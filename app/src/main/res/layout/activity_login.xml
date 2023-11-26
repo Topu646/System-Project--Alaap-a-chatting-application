@@ -195,7 +195,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="12dp"
-                    android:background="@drawable/fb_icon"/>
+                    android:background="@drawable/fb_icon"
+                    android:visibility="gone"/>
 
 
 

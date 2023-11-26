@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedDispatcherKt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Consumer;
 
@@ -37,8 +38,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
@@ -66,8 +69,9 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
     ImageView profileimageview,signout;
 
     Button addpostbutton,newsfeedbutton;
-    String namefromgoogle, emailfromgoogle;
+    String namefromgoogle, emailfromgoogle,uid;
     FirebaseAuth mauth;
+    FirebaseFirestore firebaseFirestore;
 //    TextView demotext, demotext2;
     FloatingActionButton floatingActionButton;
     private List<ChatMessage>conversations;
@@ -115,6 +119,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         database = FirebaseFirestore.getInstance();
 
         mauth = FirebaseAuth.getInstance();
+        uid = mauth.getCurrentUser().getUid();
 
         floatingActionButton = findViewById(R.id.plusbtn);
         profileimageview = findViewById(R.id.profileicon);
@@ -123,6 +128,20 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         newsfeedbutton = findViewById(R.id.newsfeedid);
 
         signout = findViewById(R.id.imageSignout);
+
+
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(uid);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                binding.demotext.setText(documentSnapshot.getString("name"));
+                binding.demotext2.setText(documentSnapshot.getString("email"));
+            }
+        });
+
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

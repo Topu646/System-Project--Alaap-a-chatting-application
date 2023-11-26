@@ -2,10 +2,12 @@ package com.example.alaap;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,25 +35,33 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 public class EditProfile extends AppCompatActivity {
 
-    String name,email,uid;
+    String name,email,uid,bio;
     String editedname,edittedemail,editedbio;
     Button editstatusbutton,changeprofilebutton;
     TextView emailtextview,usernametextview,uppernametextview, upperemailtextview,biotextview;
 
     ImageView imgprofile,header_img;
 
+    FirebaseFirestore firebaseFirestore;
+
     ImageView nameeditimageview,emaileditimageview,bioeditimageview;
+
+    private ImageButton backbutton;
+
     EditText nameedittext,emailedittext,bioedittext,socialedittext;
     private Uri imagePath;
     FirebaseAuth mauth;
@@ -59,6 +70,7 @@ public class EditProfile extends AppCompatActivity {
    // StorageReference userRef;
    DocumentReference userRef;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,45 +85,85 @@ public class EditProfile extends AppCompatActivity {
         upperemailtextview =findViewById(R.id.emailtextid);
         biotextview = findViewById(R.id.bioid);
 
-       nameeditimageview = findViewById(R.id.nameeditbtn);
-       emaileditimageview = findViewById(R.id.emaileditbtn);
-       bioeditimageview = findViewById(R.id.bioeditbtn);
-
-       nameedittext = findViewById(R.id.nameedittext);
-       emailedittext = findViewById(R.id.emailedittext);
-       bioedittext = findViewById(R.id.bioedittext);
-
+        editstatusbutton = findViewById(R.id.editstatusbtn);
 
         imgprofile = findViewById(R.id.profilePicture);
         header_img = findViewById(R.id.roundImageView);
 
 
-        nameeditimageview.setOnClickListener(new View.OnClickListener() {
+
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(uid);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
-            public void onClick(View view) {
-                nameedittext.setVisibility(View.VISIBLE);
-                usernametextview.setText("");
-                editedname = nameedittext.getText().toString().trim();
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                 usernametextview.setText(documentSnapshot.getString("name"));
+                 biotextview.setText(documentSnapshot.getString("bio"));
+                 emailtextview.setText(documentSnapshot.getString("email"));
+                 upperemailtextview.setText(documentSnapshot.getString("email"));
+                 uppernametextview.setText(documentSnapshot.getString("name"));
             }
         });
 
-        emaileditimageview.setOnClickListener(new View.OnClickListener() {
+
+//       nameeditimageview = findViewById(R.id.nameeditbtn);
+//       emaileditimageview = findViewById(R.id.emaileditbtn);
+//       bioeditimageview = findViewById(R.id.bioeditbtn);
+//
+//       nameedittext = findViewById(R.id.nameedittext);
+//       emailedittext = findViewById(R.id.emailedittext);
+//       bioedittext = findViewById(R.id.bioedittext);
+
+        backbutton = findViewById(R.id.back);
+        backbutton.setOnClickListener(view -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
+
+
+        editstatusbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                emailedittext.setVisibility(View.VISIBLE);
-                edittedemail = emailedittext.getText().toString().trim();
-                emailtextview.setText("");
+                String name,bio;
+                name = usernametextview.getText().toString().trim();
+                bio = biotextview.getText().toString().trim();
+                Intent intent = new Intent(EditProfile.this,EditStatus.class);
+                intent.putExtra("name",name);
+                intent.putExtra("bio",bio);
+                startActivity(intent);
             }
         });
 
-        bioeditimageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bioedittext.setVisibility(View.VISIBLE);
-                biotextview.setText("");
-                editedbio = bioedittext.getText().toString().trim();
-            }
-        });
+
+
+
+
+//        nameeditimageview.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                nameedittext.setVisibility(View.VISIBLE);
+//                usernametextview.setText("");
+//                editedname = nameedittext.getText().toString().trim();
+//            }
+//        });
+//
+//        emaileditimageview.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                emailedittext.setVisibility(View.VISIBLE);
+//                edittedemail = emailedittext.getText().toString().trim();
+//                emailtextview.setText("");
+//            }
+//        });
+//
+//        bioeditimageview.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                bioedittext.setVisibility(View.VISIBLE);
+//                biotextview.setText("");
+//                editedbio = bioedittext.getText().toString().trim();
+//            }
+//        });
 
 
 
@@ -121,6 +173,8 @@ public class EditProfile extends AppCompatActivity {
         if (bundle != null) {
             name = bundle.getString("name");
             email = bundle.getString("email");
+            bio = bundle.getString("bio");
+            biotextview.setText(bio);
         }
         //nametextview.setText(name);
         //emailtextview.setText(email);
@@ -232,7 +286,7 @@ public class EditProfile extends AppCompatActivity {
                         Toast.makeText(EditProfile.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        Toast.makeText(EditProfile.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfile.this, Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
                     progressDialog.dismiss();
                 }
