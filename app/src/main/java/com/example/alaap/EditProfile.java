@@ -44,10 +44,13 @@ import java.util.UUID;
 public class EditProfile extends AppCompatActivity {
 
     String name,email,uid;
+    String editedname,edittedemail,editedbio;
     Button editstatusbutton,changeprofilebutton;
-    TextView emailtextview,usernametextview,uppernametextview, upperemailtextview;
+    TextView emailtextview,usernametextview,uppernametextview, upperemailtextview,biotextview;
 
     ImageView imgprofile,header_img;
+
+    ImageView nameeditimageview,emaileditimageview,bioeditimageview;
     EditText nameedittext,emailedittext,bioedittext,socialedittext;
     private Uri imagePath;
     FirebaseAuth mauth;
@@ -68,20 +71,49 @@ public class EditProfile extends AppCompatActivity {
         emailtextview = findViewById(R.id.statusid);
         uppernametextview = findViewById(R.id.nametextid);
         upperemailtextview =findViewById(R.id.emailtextid);
+        biotextview = findViewById(R.id.bioid);
 
-//        nameeditbutton = findViewById(R.id.nameeditbtn);
-//        emaileditbutton = findViewById(R.id.emaileditbtn);
-//        bioeditbutton = findViewById(R.id.bioeditbtn);
-//        socialimeditbutton = findViewById(R.id.socialeditbtn);
+       nameeditimageview = findViewById(R.id.nameeditbtn);
+       emaileditimageview = findViewById(R.id.emaileditbtn);
+       bioeditimageview = findViewById(R.id.bioeditbtn);
+
+       nameedittext = findViewById(R.id.nameedittext);
+       emailedittext = findViewById(R.id.emailedittext);
+       bioedittext = findViewById(R.id.bioedittext);
 
 
         imgprofile = findViewById(R.id.profilePicture);
         header_img = findViewById(R.id.roundImageView);
 
-//        nameedittext = findViewById(R.id.nameidedit);
-//        emailedittext = findViewById(R.id.emailidedit);
-//        bioedittext = findViewById(R.id.bioidedit);
-//        socialedittext = findViewById(R.id.socialidedit);
+
+        nameeditimageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nameedittext.setVisibility(View.VISIBLE);
+                usernametextview.setText("");
+                editedname = nameedittext.getText().toString().trim();
+            }
+        });
+
+        emaileditimageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                emailedittext.setVisibility(View.VISIBLE);
+                edittedemail = emailedittext.getText().toString().trim();
+                emailtextview.setText("");
+            }
+        });
+
+        bioeditimageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bioedittext.setVisibility(View.VISIBLE);
+                biotextview.setText("");
+                editedbio = bioedittext.getText().toString().trim();
+            }
+        });
+
+
 
         changeprofilebutton = findViewById(R.id.changeProfilePictureButton);
 
