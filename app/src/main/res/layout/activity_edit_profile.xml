@@ -52,7 +52,8 @@
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/secondbar">
                 <ImageView
                     android:id="@+id/roundImageView"
                     android:layout_width="46dp"
@@ -72,11 +73,11 @@
                     android:layout_margin="10dp">
                     <TextView
                         android:id="@+id/nametextid"
-                        android:layout_width="220dp"
-                        android:layout_height="27dp"
-                        android:text="Proloy Karmakar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name"
                         android:textColor="#FFFFFF"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.497"
                         app:layout_constraintStart_toStartOf="parent"
@@ -85,11 +86,11 @@
 
                     <TextView
                         android:id="@+id/emailtextid"
-                        android:layout_width="209dp"
-                        android:layout_height="24dp"
-                        android:text="proloy@gmail.com"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="email@gmail.com"
                         android:textColor="#FFFFFF"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         tools:ignore="MissingConstraints"
                         tools:layout_editor_absoluteX="95dp"
                         tools:layout_editor_absoluteY="48dp" />
@@ -103,7 +104,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="80dp"
+
+                android:layout_below="@id/secondbar"
                 android:background="#FFFFFF"
                 app:cardCornerRadius="30dp">
 
@@ -111,9 +113,8 @@
                     android:id="@+id/profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="50dp"
-                    android:gravity="center">
+
+                    >
 
                     <!--                    <ImageView-->
                     <!--                        android:id="@+id/profilePicture"-->
@@ -131,10 +132,8 @@
                         android:layout_height="120dp"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="-150dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="120dp"
+
+                        android:layout_margin="20dp"
                         android:background="@drawable/imagebackground"
                         android:backgroundTint="@color/white"
                         android:scaleType="centerCrop"
@@ -143,27 +142,32 @@
                     <Button
                         android:id="@+id/changeProfilePictureButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:layout_below="@id/profilePicture"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="-100dp"
-                        android:layout_marginBottom="30dp"
+
                         android:background="@drawable/buttonbackground"
-                        android:backgroundTint="@color/purple_200"
+                        android:backgroundTint="@color/my_primary"
+                        android:padding="10dp"
+                        android:layout_margin="20dp"
                         android:text="Change Profile Picture"
-                        android:textSize="12dp" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/changeProfilePictureButton"
-                        android:layout_marginStart="120dp"
-                        android:layout_marginTop="0dp"
+
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
                         android:fontFamily="sans-serif-black"
                         android:text="Name"
                         android:textColor="@color/black"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <!--                    <ImageView-->
@@ -181,7 +185,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/name"
-                        android:layout_marginStart="120dp"
+                        android:layout_centerHorizontal="true"
+
                         android:layout_marginTop="0dp"
                         android:text="Proloy Karmakar"
                         android:textSize="15sp"
@@ -205,12 +210,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/usernameid"
-                        android:layout_marginStart="120dp"
+
+                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
                         android:fontFamily="sans-serif-black"
                         android:text="Email"
                         android:textColor="@color/black"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
 
@@ -227,10 +234,11 @@
                     <TextView
                         android:id="@+id/statusid"
                         android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/email"
                         android:layout_marginStart="120dp"
-                        android:layout_marginTop="0dp"
+
                         android:fontFamily="sans-serif-black"
                         android:text="proloy@gmail.com"
                         android:textSize="15sp"
@@ -255,12 +263,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/statusid"
-                        android:layout_marginStart="120dp"
+                        android:layout_marginBottom="10dp"
                         android:layout_marginTop="20dp"
                         android:fontFamily="sans-serif-black"
                         android:text="Bio"
+                        android:layout_centerHorizontal="true"
                         android:textColor="@color/black"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
 
@@ -279,10 +288,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/bio"
-                        android:layout_marginStart="120dp"
+                        android:layout_centerHorizontal="true"
+
                         android:layout_marginTop="0dp"
                         android:fontFamily="sans-serif-black"
-                        android:text="Simple Living,High Thinking"
+                        android:text="Demo Text"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
@@ -295,12 +305,16 @@
 
     <Button
         android:id="@+id/editstatusbtn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="620dp"
-        android:layout_marginRight="70dp"
+
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="@color/black"
+        android:layout_marginLeft="30dp"
         android:background="@drawable/background_shape"
-        android:text="edit status"></Button>
+        android:text="edit info"/>
 
     </RelativeLayout>

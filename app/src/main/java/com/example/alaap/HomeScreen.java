@@ -182,7 +182,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
 
         if (binding != null) {
-            loadUserDetails();
+           // loadUserDetails();
         }
 //        getToken();
         setListeners();

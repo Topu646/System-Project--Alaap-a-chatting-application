@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +32,7 @@ public class EditStatus extends AppCompatActivity {
     private Button updatebutton,cancelbutton;
     String name,bio,editedname,editedbio;
     FirebaseAuth mauth;
+    ImageButton backbutton;
     PreferenceManager preferenceManager;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,6 +45,14 @@ public class EditStatus extends AppCompatActivity {
 
         updatebutton = findViewById(R.id.updatebtn);
         cancelbutton = findViewById(R.id.cancelbtn);
+
+        cancelbutton.setOnClickListener(view -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
+        backbutton = findViewById(R.id.back);
+        backbutton.setOnClickListener(view -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
 
         mauth = FirebaseAuth.getInstance();
         preferenceManager = new PreferenceManager(getApplicationContext());
@@ -101,7 +111,7 @@ public class EditStatus extends AppCompatActivity {
                                 intent.putExtra("bio",editedbio);
                                 startActivity(intent);
 
-                                Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"Successfully updated info",Toast.LENGTH_SHORT).show();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
