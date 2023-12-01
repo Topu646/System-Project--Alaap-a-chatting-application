@@ -104,30 +104,6 @@ public class EditProfile extends AppCompatActivity {
 
 
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = firebaseFirestore.collection("users").document(uid);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                 usernametextview.setText(documentSnapshot.getString("name"));
-                 biotextview.setText(documentSnapshot.getString("bio"));
-                 emailtextview.setText(documentSnapshot.getString("email"));
-                 upperemailtextview.setText(documentSnapshot.getString("email"));
-                 uppernametextview.setText(documentSnapshot.getString("name"));
-
-                String imagestring = documentSnapshot.getString("image");
-
-                if (imagestring != null) {
-                    byte[] bytes = Base64.decode(imagestring, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    imgprofile.setImageBitmap(bitmap);
-                    header_img.setImageBitmap(bitmap);
-                }
-            }
-        });
-
-
-
         backbutton = findViewById(R.id.back);
         backbutton.setOnClickListener(view -> {
             getOnBackPressedDispatcher().onBackPressed();
@@ -202,34 +178,6 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-//        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    String name = dataSnapshot.child("username").getValue(String.class);
-//                    String profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
-//
-//                    //usernametextview.setText(name);
-//
-//                    if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
-//                        Picasso.get().load(profilePictureUrl).into(imgprofile);
-//                        Picasso.get().load(profilePictureUrl).into(header_img);
-//                    }
-//                    else {
-//
-//                    }
-//
-//                } else {
-//                    // Handle the case where the user data doesn't exist
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                // Handle any errors
-//            }
-//        });
-
 
 
         changeprofilebutton.setOnClickListener(new View.OnClickListener() {
@@ -250,6 +198,37 @@ public class EditProfile extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        attachSnapshotListener();
+    }
+
+
+    private void attachSnapshotListener() {
+                firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(uid);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                 usernametextview.setText(documentSnapshot.getString("name"));
+                 biotextview.setText(documentSnapshot.getString("bio"));
+                 emailtextview.setText(documentSnapshot.getString("email"));
+                 upperemailtextview.setText(documentSnapshot.getString("email"));
+                 uppernametextview.setText(documentSnapshot.getString("name"));
+
+                String imagestring = documentSnapshot.getString("image");
+
+                if (imagestring != null) {
+                    byte[] bytes = Base64.decode(imagestring, Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    imgprofile.setImageBitmap(bitmap);
+                    header_img.setImageBitmap(bitmap);
+                }
+            }
+        });
+    }
 
         private void uploadImage() {
             ProgressDialog progressDialog = new ProgressDialog(this);

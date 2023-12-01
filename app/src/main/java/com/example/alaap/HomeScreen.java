@@ -72,7 +72,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
     String namefromgoogle, emailfromgoogle,uid;
     FirebaseAuth mauth;
     FirebaseFirestore firebaseFirestore;
-//    TextView demotext, demotext2;
+
     FloatingActionButton floatingActionButton;
     private List<ChatMessage>conversations;
     private recentConversationAdapter conversationAdapter;
@@ -131,24 +131,6 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
 
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = firebaseFirestore.collection("users").document(uid);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                binding.demotext.setText(documentSnapshot.getString("name"));
-                binding.demotext2.setText(documentSnapshot.getString("email"));
-                String imagestring = documentSnapshot.getString("image");
-
-                if (imagestring != null) {
-                    byte[] bytes = Base64.decode(imagestring, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    binding.profileicon.setImageBitmap(bitmap);
-                }
-            }
-        });
-
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -205,8 +187,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
             }
         }
 
-//        demotext.setText(name);
-//        demotext2.setText(email);
+
         profileimageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -229,6 +210,38 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
             });
         }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        attachSnapshotListener();
+    }
+
+
+    private void attachSnapshotListener() {
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(uid);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    binding.demotext.setText(documentSnapshot.getString("name"));
+                    binding.demotext2.setText(documentSnapshot.getString("email"));
+                    String imagestring = documentSnapshot.getString("image");
+
+                    if (imagestring != null) {
+                        byte[] bytes = Base64.decode(imagestring, Base64.DEFAULT);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        binding.profileicon.setImageBitmap(bitmap);
+                    }
+                } else {
+                    // Handle the case where the document does not exist or is null
+                    Log.d("HomeActivity", "Current data: null");
+                }
+            }
+        });
+    }
+
 
     private void signout_fun() {
         gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -408,30 +421,6 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
 
                 logout_user();
-
-//            if(code.equals("two"))
-////            {
-//                gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-////                        finish();
-////                        startActivity(new Intent(HomeScreen.this, LoginActivity.class));
-//
-//                        if (task.isSuccessful()) {
-//                            // Sign out was successful, navigate to the login screen
-//                            navigateToLogin();
-//                        } else {
-//                            Log.d("error", task.getException().getMessage());
-//                        }
-//                    }
-//                });
-////            }
-////
-////            if(code.equals("one"))
-////            {
-////                mauth.signOut();
-////                signOutUser();
-////            }
 
         }
 

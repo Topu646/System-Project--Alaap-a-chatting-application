@@ -76,7 +76,7 @@ public class EditStatus extends AppCompatActivity {
                 HashMap<String,Object> User = new HashMap<>();
                 User.put("name",editedname);
                 User.put("bio",editedbio);
-                String uid = mauth.getUid();
+                String uid = mauth.getCurrentUser().getUid();
 
 
 
