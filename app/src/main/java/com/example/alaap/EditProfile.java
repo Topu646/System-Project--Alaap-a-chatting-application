@@ -81,7 +81,7 @@ public class EditProfile extends AppCompatActivity {
    // StorageReference userRef;
    DocumentReference userRef;
 
-    @SuppressLint("MissingInflatedId")
+  //  @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,6 +209,7 @@ public class EditProfile extends AppCompatActivity {
     private void attachSnapshotListener() {
                 firebaseFirestore = FirebaseFirestore.getInstance();
         DocumentReference documentReference = firebaseFirestore.collection("users").document(uid);
+        DocumentReference documentReference1 = firebaseFirestore.collection("conversations").document(uid);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {

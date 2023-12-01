@@ -16,6 +16,7 @@ import java.util.List;
 public class recentConversationAdapter extends RecyclerView.Adapter<recentConversationAdapter.ConversationViewHolder> {
 
     private final List<ChatMessage> chatMessages;
+
     private final ConversationListener conversationListener;
 
     private Bitmap getConversationImage(String encodedImage)

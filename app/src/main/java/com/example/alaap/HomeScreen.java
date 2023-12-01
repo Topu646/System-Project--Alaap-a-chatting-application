@@ -164,7 +164,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
 
         if (binding != null) {
-           // loadUserDetails();
+            // loadUserDetails();
         }
 //        getToken();
         setListeners();
@@ -202,14 +202,14 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
 
 
 
-            signout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    signout_fun();
-                }
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signout_fun();
+            }
 
-            });
-        }
+        });
+    }
 
     @Override
     protected void onResume() {
@@ -339,8 +339,6 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         }
         if (value!=null)
         {
-
-
             for (DocumentChange documentChange : value.getDocumentChanges())
             {
                 if (documentChange.getType() == DocumentChange.Type.ADDED)
@@ -350,7 +348,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
                     ChatMessage chatMessage = new ChatMessage();
                     chatMessage.senderId = senderId;
                     chatMessage.recieverId = receiverId;
-                    if (preferenceManager.getString("userId").equals(senderId))
+                    if(preferenceManager.getString("userId").equals(senderId))
                     {
                         chatMessage.conversationImage = documentChange.getDocument().getString("receiverImage");
                         chatMessage.conversationNmae = documentChange.getDocument().getString("receiverName");
@@ -363,7 +361,8 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
                     chatMessage.message = documentChange.getDocument().getString("lastMessage");
                     chatMessage.dateObject = documentChange.getDocument().getDate("timestamp");
                     conversations.add(chatMessage);
-                }else if (documentChange.getType() == DocumentChange.Type.MODIFIED)
+                }
+                else if (documentChange.getType() == DocumentChange.Type.MODIFIED)
                 {
                     for (int i =0; i < conversations.size();i++)
                     {
@@ -377,15 +376,12 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
                         }
                     }
                 }
-
             }
             Collections.sort(conversations, (obj1 , obj2) -> obj2.dateObject.compareTo(obj1.dateObject));
             conversationAdapter.notifyDataSetChanged();
             binding.conversationsRecyclerview.smoothScrollToPosition(0);
             binding.conversationsRecyclerview.setVisibility(View.VISIBLE);
             binding.progressBar.setVisibility(View.GONE);
-
-
         }
 
 
@@ -420,7 +416,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         if (item.getItemId() == R.id.signoutid) {
 
 
-                logout_user();
+            logout_user();
 
         }
 
