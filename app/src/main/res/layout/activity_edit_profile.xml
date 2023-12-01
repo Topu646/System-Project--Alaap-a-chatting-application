@@ -56,14 +56,13 @@
                 android:id="@+id/secondbar">
                 <ImageView
                     android:id="@+id/roundImageView"
-                    android:layout_width="46dp"
-                    android:layout_height="46dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_margin="16dp"
-                    android:background="@drawable/background_shape"
-                    android:scaleType="fitCenter"
+                    android:background="@drawable/imagebackground"
                     android:src="@drawable/profileicon2"
-
                     tools:ignore="MissingConstraints"
+                    android:backgroundTint="@color/white"
                     tools:layout_editor_absoluteX="16dp"
                     tools:layout_editor_absoluteY="16dp" />
                 <LinearLayout
@@ -132,11 +131,12 @@
                         android:layout_height="120dp"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-
-                        android:layout_margin="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
                         android:background="@drawable/imagebackground"
                         android:backgroundTint="@color/white"
-                        android:scaleType="centerCrop"
+                        android:layout_marginBottom="20dp"
                         android:src="@drawable/profileicon2" />
 
                     <Button

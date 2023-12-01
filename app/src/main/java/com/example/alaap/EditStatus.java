@@ -79,7 +79,6 @@ public class EditStatus extends AppCompatActivity {
                 String uid = mauth.getCurrentUser().getUid();
 
 
-
                 firestore.collection("users").document(uid).update(User)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

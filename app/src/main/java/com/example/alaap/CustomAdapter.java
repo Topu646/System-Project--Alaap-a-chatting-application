@@ -2,14 +2,20 @@ package com.example.alaap;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.annotation.NonNull;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +23,10 @@ import java.util.List;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<PostItem>list;
+    List<PostItem>list;
 
 
-    public CustomAdapter(Context context, ArrayList<PostItem> list) {
+    public CustomAdapter(Context context, List<PostItem> list) {
         this.context = context;
         this.list = list;
     }
@@ -28,7 +34,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item,parent,false);
+
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item,parent,false);
         return new MyViewHolder(v);
     }
 
@@ -38,6 +45,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         PostItem postItem = list.get(position);
         holder.usernametextview.setText(postItem.getUsername());
         holder.userposttextview.setText(postItem.getUserpost());
+
+        String imageUri=null;
+        imageUri = postItem.getImgstring();
+        if(imageUri == null){ holder.postimageview.setVisibility(View.GONE); }
+        else {
+            holder.postimageview.setVisibility(View.VISIBLE);
+            Picasso.get().load(imageUri).into(holder.postimageview);
+        }
     }
 
     @Override
@@ -49,11 +64,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
         TextView userposttextview;
         TextView usernametextview;
+        ImageView postimageview;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             usernametextview = itemView.findViewById(R.id.usernameid);
             userposttextview = itemView.findViewById(R.id.userpostid);
+            postimageview = itemView.findViewById(R.id.posimgtid);
         }
 
 //    private Activity context;

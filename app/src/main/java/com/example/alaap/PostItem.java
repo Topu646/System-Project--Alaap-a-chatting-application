@@ -4,6 +4,14 @@ public class PostItem {
     String userpost;
     String username;
 
+    String imgstring;
+
+    public PostItem(String username,String userpost,String imgstring) {
+        this.username = username;
+        this.userpost = userpost;
+        this.imgstring = imgstring;
+    }
+
     public PostItem(String username,String userpost) {
         this.username = username;
         this.userpost = userpost;
@@ -28,4 +36,13 @@ public class PostItem {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getImgstring() {
+        return imgstring;
+    }
+
+    public void setImgstring(String imgstring) {
+        this.imgstring = imgstring;
+    }
+
 }
