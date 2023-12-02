@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -151,7 +153,7 @@ public class ChatActivity extends BaseActivity {
                             if (responseJson.getInt("failure") == 1)
                             {
                                 JSONObject error = (JSONObject) results.get(0);
-                                showToast(error.getString("error"));
+                               // showToast(error.getString("error"));
                                 return;
                             }
                         }
@@ -190,6 +192,7 @@ public class ChatActivity extends BaseActivity {
 
                 }
                 recieverUser.token = value.getString(Constants.KEY_FCM_TOKEN);
+                Log.d("Token : ","test"+recieverUser.token);
                 if (recieverUser.image == null)
                 {
                     recieverUser.image = value.getString("image");
