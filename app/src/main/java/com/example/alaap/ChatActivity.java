@@ -161,13 +161,13 @@ public class ChatActivity extends BaseActivity {
                     }
                     showToast("Notification sent successfully");
                 }else {
-                    showToast("Error: "+ response.code());
+                   // showToast("Error: "+ response.code());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
-                showToast(t.getMessage());
+                //showToast(t.getMessage());
 
             }
         });
