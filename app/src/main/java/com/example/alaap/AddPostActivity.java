@@ -138,7 +138,7 @@ public class AddPostActivity extends AppCompatActivity {
                     });
                 }
 
-                if(imageurl == null && !post.isEmpty())
+               else if(imageurl == null && !post.isEmpty())
                 {
                     String key = databaseReference.push().getKey();
 
