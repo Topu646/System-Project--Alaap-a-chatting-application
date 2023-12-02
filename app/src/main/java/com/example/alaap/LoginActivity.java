@@ -35,11 +35,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
+
+import java.util.HashMap;
 
 import io.grpc.ClientStreamTracer;
 
@@ -59,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     FirebaseDatabase database;
+    FirebaseDatabase firebaseDatabase;
 
     ProgressDialog progressDialog;
 
@@ -249,11 +252,67 @@ public class LoginActivity extends AppCompatActivity {
 //                    users.setEmail(user.getEmail());
 //
 //                    database.getReference().child("Users").child(user.getUid()).setValue(users);
-                    Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
-                    //intent.putExtra("code_no","two");
-                    startActivity(intent);
-//                    navigateToSecondActivity();
+
+
+                    FirebaseUser firebaseUseruser = mAuth.getCurrentUser();
+                    String email = firebaseUseruser.getEmail();
+                    String name = firebaseUseruser.getDisplayName();
+
+
+                    String user = mAuth.getCurrentUser().getUid();
+
+                    firebaseDatabase.getInstance().getReference().child("user").child(user).setValue(new User(name,email));
+
+                    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                    HashMap<String,Object> User = new HashMap<>();
+                    User.put("name",name);
+                    User.put("email",email);
+                    String uid = mAuth.getUid();
+
+
+                    firestore.collection("users").document(uid).set(User)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+
+                                    preferenceManager.putBoolean("isSignedIn",true);
+                                    preferenceManager.putString("userId",uid);
+                                    preferenceManager.putString("name",name);
+                                    preferenceManager.putString("email",email);
+                                    FirebaseUser firebaseuser = mAuth.getCurrentUser();
+
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(name)
+                                            .build();
+                                    firebaseuser.updateProfile(profileUpdates)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful())
+                                                    {
+                                                        Log.d(TAG, "User profile updated.");
+                                                    }
+                                                }
+                                            });
+//                            user.delete();
+//
+                                    Intent intent = new Intent(LoginActivity.this, HomeScreen.class);
+                                    intent.putExtra("email",email);
+                                    intent.putExtra("name",name);
+                                    startActivity(intent);
+                                    Toast.makeText(getApplicationContext(),"Registration successful",Toast.LENGTH_SHORT).show();
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                    Toast.makeText(LoginActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                 }
+
                 else{
                     Toast.makeText(LoginActivity.this,"Error while log in with google",Toast.LENGTH_SHORT).show();
                 }
