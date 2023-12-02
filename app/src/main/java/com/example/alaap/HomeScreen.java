@@ -166,7 +166,7 @@ public class HomeScreen extends BaseActivity implements ConversationListener{
         if (binding != null) {
             // loadUserDetails();
         }
-//        getToken();
+        getToken();
         setListeners();
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();

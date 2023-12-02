@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.alaap.databinding.ItemContainerRecentConversationBinding;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
